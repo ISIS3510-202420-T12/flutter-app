@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wearabouts/core/theme/theme.dart';
+import 'package:wearabouts/features/auth/view/pages/firstTimePage.dart';
 
 void main() {
   runApp(const MainApp());
@@ -9,12 +11,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      title: "WearAbouts",
+      theme: AppTheme.lightThemeMode,
+      home: const FirstTimePage()
+
     );
   }
 }
