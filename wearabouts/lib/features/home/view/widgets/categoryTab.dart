@@ -14,7 +14,11 @@ class CategoryTab extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SvgPicture.asset(assetName, height: 45),
+              child: SvgPicture.asset(
+                assetName,
+                height: 55,
+                width: 20,
+              ),
             ),
             Text(name,
                 style:
