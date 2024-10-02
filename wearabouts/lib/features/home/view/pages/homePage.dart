@@ -126,14 +126,19 @@ class _HomePageState extends State<HomePage> {
               //--------------- CARDS -------------------------
               Consumer<MarketPlaceViewModel>(
                 builder: (context, viewMoodel, child) {
-                  return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2, childAspectRatio: 2 / 3),
-                      itemCount: viewMoodel.items.length,
-                      itemBuilder: (context, index) {
-                        final clothe = viewMoodel.items[index];
-                        return ClothesCard(item: clothe);
-                      });
+                  return Container(
+                    color: const Color.fromRGBO(73, 13, 8, 1),
+                    child: Expanded(
+                      child: Column(
+                        children: viewMoodel.items.map((clothe) {
+                          return SizedBox(
+                            height: 10,
+                            child: ClothesCard(item: clothe),
+                          ); // Tu widget para cada elemento
+                        }).toList(),
+                      ),
+                    ),
+                  );
                 },
               )
             ],

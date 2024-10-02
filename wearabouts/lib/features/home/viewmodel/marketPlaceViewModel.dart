@@ -22,7 +22,5 @@ class MarketPlaceViewModel with ChangeNotifier {
     for (int i = 0; i <= 10; i++) {
       items.add(Clothe());
     }
-
-    items = [];
   }
 }
