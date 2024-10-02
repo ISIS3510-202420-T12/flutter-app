@@ -18,7 +18,7 @@ class SearchBarWithMap extends StatelessWidget {
             child: Row(
               children: [
                 const SizedBox(width: 8),
-                Icon(Icons.search, color: Pallete.backgroundColor1),
+                Icon(Icons.search, color: Pallete.fontColor1),
                 const SizedBox(width: 8),
                 Expanded(
                   child: TextField(
@@ -41,9 +41,7 @@ class SearchBarWithMap extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: IconButton(
-            onPressed: () {
-              // Funcionalidad del botón no implementada por ahora
-            },
+            onPressed: () {},
             icon: Icon(Icons.map, color: Pallete.fontColor1),
           ),
         ),

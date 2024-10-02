@@ -4,6 +4,7 @@ import 'package:wearabouts/features/donation/widgets/donation_statistics_card.da
 import 'package:wearabouts/features/donation/widgets/categoryIcon.dart';
 import 'package:wearabouts/features/donation/widgets/featuredCard.dart';
 import 'package:wearabouts/features/donation/widgets/searchBar.dart';
+import 'package:wearabouts/features/home/view/widgets/appBar.dart';
 
 class DonationPage extends StatelessWidget {
   const DonationPage({super.key});
@@ -11,6 +12,7 @@ class DonationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const MyAppBar(),
       backgroundColor: Pallete.backgroundColor1,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -67,7 +69,7 @@ class DonationPage extends StatelessWidget {
                 title: "Help them have access to a hospital!",
                 goal: "\$52,650/70,000",
                 percentage: 82,
-                imagePath: '/lib/core/media/PictureKids.png',
+                imagePath: 'Assets/PictureKids.png',
               ),
             ],
           ),
