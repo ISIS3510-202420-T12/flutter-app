@@ -128,3 +128,11 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+wearabouts/macos/Flutter/GeneratedPluginRegistrant.swift
+wearabouts/linux/flutter/generated_plugins.cmake
+wearabouts/linux/flutter/generated_plugin_registrant.h
+wearabouts/linux/flutter/generated_plugin_registrant.cc
+wearabouts/macos/Flutter/GeneratedPluginRegistrant.swift
+wearabouts/windows/flutter/generated_plugin_registrant.cc
+wearabouts/windows/flutter/generated_plugin_registrant.h
+wearabouts/windows/flutter/generated_plugins.cmake
