@@ -7,6 +7,8 @@ class AppTheme {
       borderSide: BorderSide(color: color),
       borderRadius: BorderRadius.circular(10));
 
+  static TextStyle pageTittleStyle() => const TextStyle(fontSize: 20);
+
   static final lightThemeMode = ThemeData.light().copyWith(
       scaffoldBackgroundColor: Pallete.whiteColor,
 
