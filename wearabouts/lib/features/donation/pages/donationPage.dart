@@ -63,7 +63,7 @@ class DonationPage extends StatelessWidget {
                 ],
               ),
 
-              FeaturedCard(
+              const FeaturedCard(
                 title: "Help them have access to a hospital!",
                 goal: "\$52,650/70,000",
                 percentage: 82,
