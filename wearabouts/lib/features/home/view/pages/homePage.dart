@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wearabouts/features/home/view/widgets/appBar.dart';
+import 'package:wearabouts/features/home/view/widgets/bottomBar.dart';
 import 'package:wearabouts/features/home/view/widgets/categoryTab.dart';
 import 'package:wearabouts/features/home/view/widgets/clothesCard.dart';
 import 'package:wearabouts/features/home/viewmodel/marketPlaceViewModel.dart';
@@ -71,54 +72,7 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       )),
-      bottomNavigationBar: new Theme(
-        data: Theme.of(context).copyWith(
-          // sets the background color of the `BottomNavigationBar`
-          canvasColor: Pallete.color2,
-        ),
-        child: Container(
-          color: Colors.transparent,
-          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: BottomNavigationBar(
-                backgroundColor: Colors.transparent,
-                fixedColor: Pallete.whiteColor,
-                unselectedItemColor: Pallete.color1,
-                currentIndex: mycurrentIndex,
-                showSelectedLabels: false,
-                onTap: (index) => {
-                      if (index == 0)
-                        {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomePage()))
-                        },
-                      if (index == 2)
-                        {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomePage()))
-                        }
-                    },
-                items: const [
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.home), label: "home"),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.sell), label: "sell"),
-                  BottomNavigationBarItem(
-                      icon: FaIcon(FontAwesomeIcons.gifts), label: "donate"),
-                  BottomNavigationBarItem(
-                      icon: FaIcon(FontAwesomeIcons.solidHeart),
-                      label: "favorites"),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.circle), label: "profile")
-                ]),
-          ),
-        ),
-      ),
+      bottomNavigationBar: MyBottombar().bottomnavbar(context, mycurrentIndex),
       body: SingleChildScrollView(
         child: Center(
           child: Column(

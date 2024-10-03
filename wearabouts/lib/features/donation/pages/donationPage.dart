@@ -5,6 +5,7 @@ import 'package:wearabouts/features/donation/widgets/categoryIcon.dart';
 import 'package:wearabouts/features/donation/widgets/featuredCard.dart';
 import 'package:wearabouts/features/donation/widgets/searchBar.dart';
 import 'package:wearabouts/features/home/view/widgets/appBar.dart';
+import 'package:wearabouts/features/home/view/widgets/bottomBar.dart';
 
 class DonationPage extends StatelessWidget {
   const DonationPage({super.key});
@@ -13,6 +14,7 @@ class DonationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(),
+      bottomNavigationBar: MyBottombar().bottomnavbar(context, 2),
       backgroundColor: Pallete.backgroundColor1,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
