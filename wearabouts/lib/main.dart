@@ -19,6 +19,6 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
         title: "WearAbouts",
         theme: AppTheme.lightThemeMode,
-        home: const DonationPage());
+        home: const FirstTimePage());
   }
 }
