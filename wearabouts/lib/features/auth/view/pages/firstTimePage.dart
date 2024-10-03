@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart'; // Import local_auth
+import 'package:wearabouts/core/Viewframes/HomeFrame.dart';
 import 'package:wearabouts/core/theme/app_pallete.dart';
 import 'package:wearabouts/features/home/view/pages/homePage.dart';
 import 'package:wearabouts/features/auth/view/widgets/discoverNowButton.dart';
@@ -29,7 +30,7 @@ class _FirstTimePageState extends State<FirstTimePage> {
       if (authenticated) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => const HomeFrame()),
         );
       }
     } catch (e) {
@@ -131,5 +132,3 @@ class DiscoverNowButton extends StatelessWidget {
     );
   }
 }
-
-

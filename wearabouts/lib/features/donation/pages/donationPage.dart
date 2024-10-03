@@ -12,98 +12,91 @@ class DonationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const MyAppBar(),
-      bottomNavigationBar: MyBottombar().bottomnavbar(context, 2),
-      backgroundColor: Pallete.backgroundColor1,
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const DonationStatisticsCard(),
-              const SizedBox(height: 20),
-              const SearchBarWithMap(),
-              const SizedBox(height: 20),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const DonationStatisticsCard(),
+            const SizedBox(height: 20),
+            const SearchBarWithMap(),
+            const SizedBox(height: 20),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CategoryIcon(
-                      icon: Icons.book, label: "Study", color: Pallete.color2),
-                  CategoryIcon(
-                      icon: Icons.local_hospital,
-                      label: "Medic",
-                      color: Pallete.color2),
-                  CategoryIcon(
-                      icon: Icons.emoji_people,
-                      label: "Human",
-                      color: Pallete.color2),
-                  CategoryIcon(
-                      icon: Icons.pets,
-                      label: "Animals",
-                      color: Pallete.color2),
-                ],
-              ),
-              const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CategoryIcon(
+                    icon: Icons.book, label: "Study", color: Pallete.color2),
+                CategoryIcon(
+                    icon: Icons.local_hospital,
+                    label: "Medic",
+                    color: Pallete.color2),
+                CategoryIcon(
+                    icon: Icons.emoji_people,
+                    label: "Human",
+                    color: Pallete.color2),
+                CategoryIcon(
+                    icon: Icons.pets, label: "Animals", color: Pallete.color2),
+              ],
+            ),
+            const SizedBox(height: 20),
 
-              // Featured Section
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Featured",
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Pallete.color1),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text("See More",
-                        style: TextStyle(color: Pallete.color1)),
-                  ),
-                ],
-              ),
+            // Featured Section
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Featured",
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Pallete.color1),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child:
+                      Text("See More", style: TextStyle(color: Pallete.color1)),
+                ),
+              ],
+            ),
 
-              // Featured Cards con las imágenes actualizadas
-              const FeaturedCard(
-                title: "Help them have access to a hospital!",
-                goal: "\$52,650/70,000",
-                percentage: 82,
-                imagePath: 'Assets/PictureKids.png',
-              ),
+            // Featured Cards con las imágenes actualizadas
+            const FeaturedCard(
+              title: "Help them have access to a hospital!",
+              goal: "\$52,650/70,000",
+              percentage: 82,
+              imagePath: 'Assets/PictureKids.png',
+            ),
 
-              const FeaturedCard(
-                title: "Help educate underprivileged children!",
-                goal: "\$30,000/50,000",
-                percentage: 60,
-                imagePath: 'Assets/studying_kid.jpg',
-              ),
+            const FeaturedCard(
+              title: "Help educate underprivileged children!",
+              goal: "\$30,000/50,000",
+              percentage: 60,
+              imagePath: 'Assets/studying_kid.jpg',
+            ),
 
-              const FeaturedCard(
-                title: "Save endangered species!",
-                goal: "\$15,000/20,000",
-                percentage: 75,
-                imagePath: 'Assets/endangered_animals.jpg',
-              ),
+            const FeaturedCard(
+              title: "Save endangered species!",
+              goal: "\$15,000/20,000",
+              percentage: 75,
+              imagePath: 'Assets/endangered_animals.jpg',
+            ),
 
-              const FeaturedCard(
-                title: "Provide meals for the homeless!",
-                goal: "\$10,000/12,000",
-                percentage: 85,
-                imagePath: 'Assets/food_donation.jpg',
-              ),
+            const FeaturedCard(
+              title: "Provide meals for the homeless!",
+              goal: "\$10,000/12,000",
+              percentage: 85,
+              imagePath: 'Assets/food_donation.jpg',
+            ),
 
-              const FeaturedCard(
-                title: "Support recycling efforts!",
-                goal: "\$5,000/7,000",
-                percentage: 70,
-                imagePath: 'Assets/recycling_volunteers.jpg',
-              ),
-            ],
-          ),
+            const FeaturedCard(
+              title: "Support recycling efforts!",
+              goal: "\$5,000/7,000",
+              percentage: 70,
+              imagePath: 'Assets/recycling_volunteers.jpg',
+            ),
+          ],
         ),
       ),
     );
