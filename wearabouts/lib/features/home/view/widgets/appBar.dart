@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({
@@ -17,7 +18,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       actions: <Widget>[
         IconButton(
-            onPressed: () {}, icon: const Icon(Icons.leave_bags_at_home)),
+            onPressed: () {}, icon: const FaIcon(FontAwesomeIcons.shoppingBag)),
         IconButton(onPressed: () {}, icon: const Icon(Icons.search))
       ],
       leading: Row(
