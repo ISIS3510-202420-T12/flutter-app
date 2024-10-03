@@ -10,23 +10,26 @@ class CategoryTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                width: 60,
-                child: SvgPicture.asset(
-                  assetName,
-                  height: 55,
-                  width: 20,
+        child: SizedBox(
+          width: 90,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: 60,
+                  child: SvgPicture.asset(
+                    assetName,
+                    height: 55,
+                    width: 20,
+                  ),
                 ),
               ),
-            ),
-            Text(name,
-                style:
-                    const TextStyle(fontSize: 14, fontWeight: FontWeight.w300))
-          ],
+              Text(name,
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.w300))
+            ],
+          ),
         ));
   }
 }

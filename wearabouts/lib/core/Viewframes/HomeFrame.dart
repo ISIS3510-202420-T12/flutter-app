@@ -5,6 +5,7 @@ import 'package:wearabouts/features/donation/pages/donationPage.dart';
 import 'package:wearabouts/features/favorites/view/pages/favoritesPage.dart';
 import 'package:wearabouts/features/home/view/pages/homePage.dart';
 import 'package:wearabouts/features/home/view/widgets/appBar.dart';
+import 'package:wearabouts/features/profile/view/pages/profilePage.dart';
 import 'package:wearabouts/features/sell/view/pages/sellPage.dart';
 
 class HomeFrame extends StatefulWidget {
@@ -20,7 +21,7 @@ class _HomeFrameState extends State<HomeFrame> {
     const SellPage(),
     const DonationPage(),
     const FavoritesPage(),
-    const HomePage()
+    const ProfilePage()
   ];
   int mycurrentIndex = 0;
 

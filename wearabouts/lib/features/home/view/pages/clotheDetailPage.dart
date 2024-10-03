@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wearabouts/features/home/model/clothe.dart';
 import 'package:wearabouts/features/home/view/widgets/buyBotton.dart';
 import 'package:wearabouts/features/home/view/widgets/contextAppBar.dart';

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:wearabouts/features/home/view/widgets/statisticsRow.dart';
 
 class VendorProfileCard extends StatefulWidget {
   const VendorProfileCard({super.key});
@@ -20,14 +22,14 @@ class _VendorProfileCardState extends State<VendorProfileCard> {
                 blurRadius: 1,
                 spreadRadius: 1)
           ]),
-      child: const Padding(
-        padding: EdgeInsets.all(8.0),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Row(
+            const Row(
               children: [
                 Icon(
                   Icons.circle_sharp,
@@ -54,27 +56,17 @@ class _VendorProfileCardState extends State<VendorProfileCard> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.lock_clock,
-                  size: 40,
-                ),
-                Column(
-                  children: [
-                    Text(
-                      "Delivery Time",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text("4.8 minutes")
-                  ],
-                )
-              ],
-            )
+            StatisticsRow(
+                icon: const Icon(Icons.lock_clock),
+                statname: "Average answer time",
+                stat: "4.9 minutes"),
+            StatisticsRow(
+                icon: const Icon(Icons.account_box),
+                statname: "Average delivery time",
+                stat: "3 days")
           ],
         ),
       ),
