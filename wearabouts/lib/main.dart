@@ -3,6 +3,7 @@ import 'package:wearabouts/core/theme/theme.dart';
 import 'package:wearabouts/features/auth/view/pages/firstTimePage.dart';
 import 'package:provider/provider.dart';
 import 'package:wearabouts/features/home/viewmodel/marketPlaceViewModel.dart';
+import 'package:wearabouts/features/donation/pages/donationPage.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
@@ -18,6 +19,6 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
         title: "WearAbouts",
         theme: AppTheme.lightThemeMode,
-        home: const FirstTimePage());
+        home: const DonationPage());
   }
 }

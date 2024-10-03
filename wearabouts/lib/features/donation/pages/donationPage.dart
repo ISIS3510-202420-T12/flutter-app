@@ -4,6 +4,7 @@ import 'package:wearabouts/features/donation/widgets/donation_statistics_card.da
 import 'package:wearabouts/features/donation/widgets/categoryIcon.dart';
 import 'package:wearabouts/features/donation/widgets/featuredCard.dart';
 import 'package:wearabouts/features/donation/widgets/searchBar.dart';
+import 'package:wearabouts/features/home/view/widgets/appBar.dart';
 
 class DonationPage extends StatelessWidget {
   const DonationPage({super.key});
@@ -11,6 +12,7 @@ class DonationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const MyAppBar(),
       backgroundColor: Pallete.backgroundColor1,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -63,11 +65,40 @@ class DonationPage extends StatelessWidget {
                 ],
               ),
 
+              // Featured Cards con las imágenes actualizadas
               const FeaturedCard(
                 title: "Help them have access to a hospital!",
                 goal: "\$52,650/70,000",
                 percentage: 82,
-                imagePath: '/lib/core/media/PictureKids.png',
+                imagePath: 'Assets/PictureKids.png',
+              ),
+
+              const FeaturedCard(
+                title: "Help educate underprivileged children!",
+                goal: "\$30,000/50,000",
+                percentage: 60,
+                imagePath: 'Assets/studying_kid.jpg',
+              ),
+
+              const FeaturedCard(
+                title: "Save endangered species!",
+                goal: "\$15,000/20,000",
+                percentage: 75,
+                imagePath: 'Assets/endangered_animals.jpg',
+              ),
+
+              const FeaturedCard(
+                title: "Provide meals for the homeless!",
+                goal: "\$10,000/12,000",
+                percentage: 85,
+                imagePath: 'Assets/food_donation.jpg',
+              ),
+
+              const FeaturedCard(
+                title: "Support recycling efforts!",
+                goal: "\$5,000/7,000",
+                percentage: 70,
+                imagePath: 'Assets/recycling_volunteers.jpg',
               ),
             ],
           ),
