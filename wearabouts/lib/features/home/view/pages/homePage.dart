@@ -89,8 +89,10 @@ class _HomePageState extends State<HomePage> {
               const Center(
                 child: Text("Marketplace",
                     textAlign: TextAlign.center,
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    )),
               ),
               const SizedBox(height: 10),
               const Padding(
