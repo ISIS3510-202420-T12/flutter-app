@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wearabouts/features/home/view/widgets/statisticsRow.dart';
 
 class VendorProfileCard extends StatefulWidget {
@@ -38,7 +37,7 @@ class _VendorProfileCardState extends State<VendorProfileCard> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Vendor's name"),
+                    Text("Victoria Pagannini"),
                     Row(
                       children: [
                         Icon(Icons.star, color: Colors.orange),
@@ -60,11 +59,20 @@ class _VendorProfileCardState extends State<VendorProfileCard> {
               height: 20,
             ),
             StatisticsRow(
-                icon: const Icon(Icons.lock_clock),
+                icon: const Icon(
+                  Icons.lock_clock,
+                  size: 40,
+                ),
                 statname: "Average answer time",
                 stat: "4.9 minutes"),
+            SizedBox(
+              height: 10,
+            ),
             StatisticsRow(
-                icon: const Icon(Icons.account_box),
+                icon: const Icon(
+                  Icons.account_box,
+                  size: 40,
+                ),
                 statname: "Average delivery time",
                 stat: "3 days")
           ],

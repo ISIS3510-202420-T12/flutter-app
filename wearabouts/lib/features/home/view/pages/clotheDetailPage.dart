@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_formatter/money_formatter.dart';
 import 'package:wearabouts/features/home/model/clothe.dart';
 import 'package:wearabouts/features/home/view/widgets/buyBotton.dart';
 import 'package:wearabouts/features/home/view/widgets/contextAppBar.dart';
@@ -19,6 +20,10 @@ class _ClotheDetailPageState extends State<ClotheDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    MoneyFormatter formatedPrice = MoneyFormatter(
+        amount: item.price.toDouble(),
+        settings: MoneyFormatterSettings(fractionDigits: 0));
+
     return Scaffold(
         appBar: const ContextAppBar(),
         body: SingleChildScrollView(
@@ -51,13 +56,16 @@ class _ClotheDetailPageState extends State<ClotheDetailPage> {
                     BuyButton()
                   ],
                 ),
-                const Text("80.000",
-                    style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                Text(formatedPrice.output.symbolOnRight,
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold)),
                 const Divider(),
                 const Row(
                   children: [
-                    Icon(Icons.support_agent),
+                    Icon(
+                      Icons.support_agent,
+                      size: 40,
+                    ),
                     SizedBox(
                       width: 30,
                       height: 50,
@@ -76,7 +84,7 @@ class _ClotheDetailPageState extends State<ClotheDetailPage> {
                 Text(item.description,
                     style: const TextStyle(
                         fontSize: 16, fontWeight: FontWeight.w400)),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 const VendorProfileCard()

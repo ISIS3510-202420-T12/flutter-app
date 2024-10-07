@@ -12,23 +12,21 @@ class StatisticsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Icon(
-          Icons.lock_clock,
-          size: 40,
-        ),
-        SizedBox(
+        icon,
+        const SizedBox(
           width: 20,
         ),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Delivery Time",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              statname,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            Text("4.8 minutes")
+            Text(stat)
           ],
         )
       ],
