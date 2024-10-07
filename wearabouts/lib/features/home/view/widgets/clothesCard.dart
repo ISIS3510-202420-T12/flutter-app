@@ -19,6 +19,9 @@ class _ClothesCardState extends State<ClothesCard> {
 
   @override
   Widget build(BuildContext context) {
+    MoneyFormatter formatedRating = MoneyFormatter(
+        amount: item.rating.toDouble(),
+        settings: MoneyFormatterSettings(fractionDigits: 1));
     MoneyFormatter formatedPrice = MoneyFormatter(
         amount: item.price.toDouble(),
         settings: MoneyFormatterSettings(fractionDigits: 0));
@@ -60,14 +63,14 @@ class _ClothesCardState extends State<ClothesCard> {
                         style: const TextStyle(
                             color: Colors.green, fontWeight: FontWeight.bold),
                       ),
-                      const Row(
+                      Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             Icons.star,
                             color: Colors.orange,
                           ),
-                          Text("4,9"),
+                          Text(formatedRating.output.nonSymbol),
                         ],
                       )
                     ],
