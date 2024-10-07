@@ -10,6 +10,11 @@ class SellPage extends StatefulWidget {
 class _SellPageState extends State<SellPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(color: Colors.blue);
+    return Container(
+      color: Colors.white,
+      child: Center(
+        child: Text("Coming soon", style: TextStyle(fontSize: 24)),
+      ),
+    );
   }
 }

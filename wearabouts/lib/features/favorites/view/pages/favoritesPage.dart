@@ -11,7 +11,15 @@ class _FavoritesPageState extends State<FavoritesPage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Container(color: Colors.red),
+      child: Container(
+        color: Colors.white,
+        child: Center(
+          child: Text(
+            "Coming soon",
+            style: TextStyle(fontSize: 24),
+          ),
+        ),
+      ),
     );
   }
 }
