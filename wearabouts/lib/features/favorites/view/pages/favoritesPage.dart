@@ -13,7 +13,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return SingleChildScrollView(
       child: Container(
         color: Colors.white,
-        child: Center(
+        child: const Center(
           child: Text(
             "Coming soon",
             style: TextStyle(fontSize: 24),

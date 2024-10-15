@@ -66,35 +66,35 @@ class DonationPage extends StatelessWidget {
               title: "Help them have access to a hospital!",
               goal: "\$52,650/70,000",
               percentage: 82,
-              imagePath: 'Assets/PictureKids.png',
+              imagePath: 'assets/images/PictureKids.png',
             ),
 
             const FeaturedCard(
               title: "Help educate underprivileged children!",
               goal: "\$30,000/50,000",
               percentage: 60,
-              imagePath: 'Assets/studying_kid.jpg',
+              imagePath: 'assets/images/studying_kid.jpg',
             ),
 
             const FeaturedCard(
               title: "Save endangered species!",
               goal: "\$15,000/20,000",
               percentage: 75,
-              imagePath: 'Assets/endangered_animals.jpg',
+              imagePath: 'assets/images/endangered_animals.jpg',
             ),
 
             const FeaturedCard(
               title: "Provide meals for the homeless!",
               goal: "\$10,000/12,000",
               percentage: 85,
-              imagePath: 'Assets/food_donation.jpg',
+              imagePath: 'assets/images/food_donation.jpg',
             ),
 
             const FeaturedCard(
               title: "Support recycling efforts!",
               goal: "\$5,000/7,000",
               percentage: 70,
-              imagePath: 'Assets/recycling_volunteers.jpg',
+              imagePath: 'assets/images/recycling_volunteers.jpg',
             ),
           ],
         ),

@@ -1,5 +1,5 @@
 name: wearabouts
-description: "A new Flutter project."
+description: "A free marketplace for clothes"
 publish_to: 'none'
 version: 0.1.0
 
@@ -28,18 +28,11 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - Assets/shoes.svg
-    - Assets/homebackground.jpeg
-    - Assets/jackets.svg
-    - Assets/tops.svg
-    - Assets/bottoms.svg
-    - Assets/PictureKids.png
-    - Assets/endangered_animals.jpg
-    - Assets/food_donation.jpg
-    - Assets/recycling_volunteers.jpg
-    - Assets/studying_kid.jpg
+    - assets/images/
 
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "Assets/App icon.png"
+  image_path: "assets/icons/ic_launcher-web.png"
+  adaptive_icon_background: "#38BCA2"
+  adaptive_icon_foreground: "assets/icons/t-shirt.jpg"

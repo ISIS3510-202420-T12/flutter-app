@@ -50,7 +50,7 @@ class _FirstTimePageState extends State<FirstTimePage> {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('Assets/homebackground.jpeg'),
+                  image: AssetImage('assets/images/homebackground.jpeg'),
                   fit: BoxFit.cover,
                 ),
                 gradient: LinearGradient(

@@ -59,19 +59,19 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   CategoryTab(
                     name: "Shoes",
-                    assetName: "Assets/shoes.svg",
+                    assetName: "assets/images/shoes.svg",
                   ),
                   CategoryTab(
                     name: "Bottoms",
-                    assetName: "Assets/bottoms.svg",
+                    assetName: "assets/images/bottoms.svg",
                   ),
                   CategoryTab(
                     name: "Tops",
-                    assetName: "Assets/tops.svg",
+                    assetName: "assets/images/tops.svg",
                   ),
                   CategoryTab(
                     name: "Jackets",
-                    assetName: "Assets/jackets.svg",
+                    assetName: "assets/images/jackets.svg",
                   ),
                 ],
               ),
