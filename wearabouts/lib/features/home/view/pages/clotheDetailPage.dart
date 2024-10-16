@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:money_formatter/money_formatter.dart';
 import 'package:wearabouts/features/home/model/clothe.dart';
+import 'package:wearabouts/features/home/view/pages/checkoutPage.dart';
+import 'package:wearabouts/features/home/view/widgets/addToKart.dart';
 import 'package:wearabouts/features/home/view/widgets/buyBotton.dart';
 import 'package:wearabouts/features/home/view/widgets/contextAppBar.dart';
 import 'package:wearabouts/features/home/view/widgets/vendorProfileCard.dart';
+import 'package:wearabouts/features/home/viewmodel/marketPlaceViewModel.dart';
 
 class ClotheDetailPage extends StatefulWidget {
   final Clothe item;
@@ -44,16 +47,35 @@ class _ClotheDetailPageState extends State<ClotheDetailPage> {
                 ),
                 const SizedBox(height: 20),
                 Text(item.title, style: const TextStyle(fontSize: 24)),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       "S size | No use",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w100),
                     ),
-                    BuyButton()
+                    Column(
+                      children: [
+                        BuyButton(
+                          onTap: () {
+                            MarketPlaceViewModel().addToKart(item);
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        AddToKartButton(onTap: () {
+                          MarketPlaceViewModel().addToKart(item);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CheckoutPage()),
+                          );
+                        })
+                      ],
+                    )
                   ],
                 ),
                 Text(formatedPrice.output.symbolOnRight,

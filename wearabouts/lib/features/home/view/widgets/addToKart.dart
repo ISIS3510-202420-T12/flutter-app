@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:wearabouts/core/theme/app_pallete.dart';
 
-class BuyButton extends StatelessWidget {
+import '../../../../core/theme/app_pallete.dart';
+
+class AddToKartButton extends StatelessWidget {
   final VoidCallback onTap;
-  const BuyButton({super.key, required this.onTap});
+  const AddToKartButton({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +19,10 @@ class BuyButton extends StatelessWidget {
               backgroundColor: Pallete.transparentColor,
               shadowColor: Pallete.transparentColor),
           child: const Text(
-            "Buy now",
+            "Add to kart",
             style: TextStyle(fontSize: 24, color: Colors.white),
           )),
     );
+    ;
   }
 }

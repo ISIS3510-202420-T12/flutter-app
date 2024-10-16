@@ -4,8 +4,8 @@ import 'package:wearabouts/features/donation/widgets/donation_statistics_card.da
 import 'package:wearabouts/features/donation/widgets/categoryIcon.dart';
 import 'package:wearabouts/features/donation/widgets/featuredCard.dart';
 import 'package:wearabouts/features/donation/widgets/searchBar.dart';
-import 'package:wearabouts/features/home/view/widgets/appBar.dart';
-import 'package:wearabouts/features/home/view/widgets/bottomBar.dart';
+import 'package:wearabouts/core/widgets/appBar.dart';
+import 'package:wearabouts/core/widgets/bottomBar.dart';
 
 class DonationPage extends StatelessWidget {
   const DonationPage({super.key});

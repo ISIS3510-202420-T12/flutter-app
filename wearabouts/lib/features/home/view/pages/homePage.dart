@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:wearabouts/features/home/view/widgets/appBar.dart';
+import 'package:wearabouts/core/widgets/appBar.dart';
 import 'package:wearabouts/features/home/view/widgets/categoryTab.dart';
 import 'package:wearabouts/features/home/view/widgets/clothesCard.dart';
 import 'package:wearabouts/features/home/viewmodel/marketPlaceViewModel.dart';
@@ -16,8 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int mycurrentIndex = 0;
-
   @override
   void initState() {
     super.initState();
