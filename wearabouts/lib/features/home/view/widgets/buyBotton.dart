@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:wearabouts/core/theme/app_pallete.dart';
 
 class BuyButton extends StatelessWidget {
-  const BuyButton({super.key});
+  final VoidCallback onTap;
+  const BuyButton({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +12,7 @@ class BuyButton extends StatelessWidget {
           gradient: LinearGradient(colors: [Pallete.color3, Pallete.color2]),
           borderRadius: BorderRadius.circular(10)),
       child: ElevatedButton(
-          onPressed: () {},
+          onPressed: onTap,
           style: ElevatedButton.styleFrom(
               fixedSize: const Size(150, 50),
               backgroundColor: Pallete.transparentColor,

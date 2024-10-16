@@ -3,6 +3,7 @@ import 'package:wearabouts/features/home/model/clothe.dart';
 
 class MarketPlaceViewModel with ChangeNotifier {
   List<Clothe> items = [];
+  List<Clothe> kart = [];
 
   setItems(List<Clothe> newlist) {
     items = newlist;
@@ -24,4 +25,11 @@ class MarketPlaceViewModel with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  addToKart(Clothe _item_) {
+    kart.add(_item_);
+    notifyListeners();
+  }
+
+  void makePayment(BuildContext context) {}
 }

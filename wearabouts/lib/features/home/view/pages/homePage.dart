@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:wearabouts/features/home/view/widgets/appBar.dart';
-import 'package:wearabouts/features/home/view/widgets/bottomBar.dart';
+import 'package:wearabouts/core/widgets/appBar.dart';
 import 'package:wearabouts/features/home/view/widgets/categoryTab.dart';
 import 'package:wearabouts/features/home/view/widgets/clothesCard.dart';
 import 'package:wearabouts/features/home/viewmodel/marketPlaceViewModel.dart';
@@ -17,8 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int mycurrentIndex = 0;
-
   @override
   void initState() {
     super.initState();
@@ -31,128 +28,85 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const MyAppBar(),
-      drawer: Drawer(
-          child: ListView(
-        children: [
-          DrawerHeader(
+    return SingleChildScrollView(
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DecoratedBox(
               decoration: BoxDecoration(
-                color: Pallete.color1,
+                gradient:
+                    LinearGradient(colors: [Pallete.color3, Pallete.color2]),
               ),
-              child: Text("Options",
-                  style: TextStyle(color: Pallete.whiteColor, fontSize: 24))),
-          ListTile(
-            title: const Text("My profile"),
-            onTap: () {
-              // Handle tap
-              Navigator.pop(context); // Close the drawer
-            },
-          ),
-          ListTile(
-            title: const Text("My donations"),
-            onTap: () {
-              // Handle tap
-              Navigator.pop(context); // Close the drawer
-            },
-          ),
-          ListTile(
-            title: const Text("Settings"),
-            onTap: () {
-              // Handle tap
-              Navigator.pop(context); // Close the drawer
-            },
-          ),
-          ListTile(
-            title: const Text("About us"),
-            onTap: () {
-              // Handle tap
-              Navigator.pop(context); // Close the drawer
-            },
-          )
-        ],
-      )),
-      bottomNavigationBar: MyBottombar().bottomnavbar(context, mycurrentIndex),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient:
-                      LinearGradient(colors: [Pallete.color3, Pallete.color2]),
-                ),
-                child: const SizedBox(height: 10, width: double.infinity),
-              ),
-              const SizedBox(height: 10),
-              const Center(
-                child: Text("Marketplace",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    )),
-              ),
-              const SizedBox(height: 10),
-              const Padding(
-                padding: EdgeInsets.all(12.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CategoryTab(
-                      name: "Shoes",
-                      assetName: "Assets/shoes.svg",
-                    ),
-                    CategoryTab(
-                      name: "Bottoms",
-                      assetName: "Assets/bottoms.svg",
-                    ),
-                    CategoryTab(
-                      name: "Tops",
-                      assetName: "Assets/tops.svg",
-                    ),
-                    CategoryTab(
-                      name: "Jackets",
-                      assetName: "Assets/jackets.svg",
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Container(
-                  height: 300,
-                  width: 1000,
-                  color: Colors.grey,
-                  child: Image.network(
-                    "https://www.fashiongonerogue.com/wp-content/uploads/2021/04/Model-Chic-Fashion.jpg",
-                    fit: BoxFit.fill,
+              child: const SizedBox(height: 10, width: double.infinity),
+            ),
+            const SizedBox(height: 10),
+            const Center(
+              child: Text("Marketplace",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  )),
+            ),
+            const SizedBox(height: 10),
+            const Padding(
+              padding: EdgeInsets.all(12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CategoryTab(
+                    name: "Shoes",
+                    assetName: "assets/images/shoes.svg",
                   ),
+                  CategoryTab(
+                    name: "Bottoms",
+                    assetName: "assets/images/bottoms.svg",
+                  ),
+                  CategoryTab(
+                    name: "Tops",
+                    assetName: "assets/images/tops.svg",
+                  ),
+                  CategoryTab(
+                    name: "Jackets",
+                    assetName: "assets/images/jackets.svg",
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Container(
+                height: 300,
+                width: 1000,
+                color: Colors.grey,
+                child: Image.network(
+                  "https://www.fashiongonerogue.com/wp-content/uploads/2021/04/Model-Chic-Fashion.jpg",
+                  fit: BoxFit.fill,
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.all(12.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text("New releases"), Text("See all")],
-                ),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Text("New releases"), Text("See all")],
               ),
-              const Divider(color: Colors.black),
-              Consumer<MarketPlaceViewModel>(
-                builder: (context, viewMoodel, child) {
-                  return Wrap(
-                    spacing: 10,
-                    runSpacing: 10,
-                    children: viewMoodel.items.map((clothe) {
-                      return ClothesCard(
-                          item: clothe); // Tu widget para cada elemento
-                    }).toList(),
-                  );
-                },
-              ),
-            ],
-          ),
+            ),
+            const Divider(color: Colors.black),
+            Consumer<MarketPlaceViewModel>(
+              builder: (context, viewMoodel, child) {
+                return Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: viewMoodel.items.map((clothe) {
+                    return ClothesCard(
+                        item: clothe); // Tu widget para cada elemento
+                  }).toList(),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

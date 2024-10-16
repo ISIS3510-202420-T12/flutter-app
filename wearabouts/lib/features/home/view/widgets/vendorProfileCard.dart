@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wearabouts/features/home/view/widgets/statisticsRow.dart';
 
 class VendorProfileCard extends StatefulWidget {
   const VendorProfileCard({super.key});
@@ -20,14 +21,14 @@ class _VendorProfileCardState extends State<VendorProfileCard> {
                 blurRadius: 1,
                 spreadRadius: 1)
           ]),
-      child: const Padding(
-        padding: EdgeInsets.all(8.0),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Row(
+            const Row(
               children: [
                 Icon(
                   Icons.circle_sharp,
@@ -36,7 +37,7 @@ class _VendorProfileCardState extends State<VendorProfileCard> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Vendor's name"),
+                    Text("Victoria Pagannini"),
                     Row(
                       children: [
                         Icon(Icons.star, color: Colors.orange),
@@ -54,27 +55,26 @@ class _VendorProfileCardState extends State<VendorProfileCard> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(
+            StatisticsRow(
+                icon: const Icon(
                   Icons.lock_clock,
                   size: 40,
                 ),
-                Column(
-                  children: [
-                    Text(
-                      "Delivery Time",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text("4.8 minutes")
-                  ],
-                )
-              ],
-            )
+                statname: "Average answer time",
+                stat: "4.9 minutes"),
+            SizedBox(
+              height: 10,
+            ),
+            StatisticsRow(
+                icon: const Icon(
+                  Icons.account_box,
+                  size: 40,
+                ),
+                statname: "Average delivery time",
+                stat: "3 days")
           ],
         ),
       ),

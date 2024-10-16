@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:money_formatter/money_formatter.dart';
 import 'package:wearabouts/features/home/model/clothe.dart';
+import 'package:wearabouts/features/home/view/pages/checkoutPage.dart';
+import 'package:wearabouts/features/home/view/widgets/addToKart.dart';
 import 'package:wearabouts/features/home/view/widgets/buyBotton.dart';
 import 'package:wearabouts/features/home/view/widgets/contextAppBar.dart';
 import 'package:wearabouts/features/home/view/widgets/vendorProfileCard.dart';
+import 'package:wearabouts/features/home/viewmodel/marketPlaceViewModel.dart';
 
 class ClotheDetailPage extends StatefulWidget {
   final Clothe item;
@@ -20,6 +23,10 @@ class _ClotheDetailPageState extends State<ClotheDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    MoneyFormatter formatedPrice = MoneyFormatter(
+        amount: item.price.toDouble(),
+        settings: MoneyFormatterSettings(fractionDigits: 0));
+
     return Scaffold(
         appBar: const ContextAppBar(),
         body: SingleChildScrollView(
@@ -40,25 +47,47 @@ class _ClotheDetailPageState extends State<ClotheDetailPage> {
                 ),
                 const SizedBox(height: 20),
                 Text(item.title, style: const TextStyle(fontSize: 24)),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       "S size | No use",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w100),
                     ),
-                    BuyButton()
+                    Column(
+                      children: [
+                        BuyButton(
+                          onTap: () {
+                            MarketPlaceViewModel().addToKart(item);
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        AddToKartButton(onTap: () {
+                          MarketPlaceViewModel().addToKart(item);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CheckoutPage()),
+                          );
+                        })
+                      ],
+                    )
                   ],
                 ),
-                const Text("80.000",
-                    style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                Text(formatedPrice.output.symbolOnRight,
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold)),
                 const Divider(),
                 const Row(
                   children: [
-                    Icon(Icons.support_agent),
+                    Icon(
+                      Icons.support_agent,
+                      size: 40,
+                    ),
                     SizedBox(
                       width: 30,
                       height: 50,
@@ -77,7 +106,7 @@ class _ClotheDetailPageState extends State<ClotheDetailPage> {
                 Text(item.description,
                     style: const TextStyle(
                         fontSize: 16, fontWeight: FontWeight.w400)),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 const VendorProfileCard()

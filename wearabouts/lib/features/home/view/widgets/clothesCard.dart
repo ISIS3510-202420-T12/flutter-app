@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_formatter/money_formatter.dart';
 import 'package:wearabouts/core/theme/app_pallete.dart';
 import 'package:wearabouts/features/home/model/clothe.dart';
 import 'package:wearabouts/features/home/view/pages/clotheDetailPage.dart';
@@ -18,6 +19,13 @@ class _ClothesCardState extends State<ClothesCard> {
 
   @override
   Widget build(BuildContext context) {
+    MoneyFormatter formatedRating = MoneyFormatter(
+        amount: item.rating.toDouble(),
+        settings: MoneyFormatterSettings(fractionDigits: 1));
+    MoneyFormatter formatedPrice = MoneyFormatter(
+        amount: item.price.toDouble(),
+        settings: MoneyFormatterSettings(fractionDigits: 0));
+
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -46,13 +54,13 @@ class _ClothesCardState extends State<ClothesCard> {
                     style: const TextStyle(fontSize: 14),
                   ),
                   const SizedBox(height: 50),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Text(
-                        "10000 ",
-                        style: TextStyle(
+                        formatedPrice.output.symbolOnRight,
+                        style: const TextStyle(
                             color: Colors.green, fontWeight: FontWeight.bold),
                       ),
                       Row(
@@ -62,7 +70,7 @@ class _ClothesCardState extends State<ClothesCard> {
                             Icons.star,
                             color: Colors.orange,
                           ),
-                          Text("4,9"),
+                          Text(formatedRating.output.nonSymbol),
                         ],
                       )
                     ],

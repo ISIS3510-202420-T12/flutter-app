@@ -21,6 +21,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () {}, icon: const FaIcon(FontAwesomeIcons.shoppingBag)),
         IconButton(onPressed: () {}, icon: const Icon(Icons.search))
       ],
+      leadingWidth: 120,
       leading: Row(
         children: [
           IconButton(
