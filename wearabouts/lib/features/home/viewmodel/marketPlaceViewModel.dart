@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:wearabouts/features/home/model/clothe.dart';
+import 'package:wearabouts/core/repositories/clothesRepository.dart';
+import 'package:wearabouts/core/repositories/model/clothe.dart';
 
 class MarketPlaceViewModel with ChangeNotifier {
+  final ClothesRepository _clothesRepository;
+
+  MarketPlaceViewModel(this._clothesRepository);
+
   List<Clothe> items = [];
   List<Clothe> kart = [];
 
@@ -19,11 +24,14 @@ class MarketPlaceViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  populate() {
-    for (int i = 0; i <= 10; i++) {
-      items.add(Clothe());
+  Future<void> populate() async {
+    try {
+      List<Clothe> fetchedItems = await _clothesRepository.fetchClothes();
+      setItems(fetchedItems);
+      notifyListeners();
+    } catch (e) {
+      print('Error fetching items: $e');
     }
-    notifyListeners();
   }
 
   addToKart(Clothe _item_) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:wearabouts/core/widgets/appBar.dart';
+
 import 'package:wearabouts/features/home/view/widgets/categoryTab.dart';
 import 'package:wearabouts/features/home/view/widgets/clothesCard.dart';
 import 'package:wearabouts/features/home/viewmodel/marketPlaceViewModel.dart';
@@ -82,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.grey,
                 child: Image.network(
                   "https://www.fashiongonerogue.com/wp-content/uploads/2021/04/Model-Chic-Fashion.jpg",
-                  fit: BoxFit.fill,
+                  fit: BoxFit.fitHeight,
                 ),
               ),
             ),

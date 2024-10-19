@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_formatter/money_formatter.dart';
 import 'package:wearabouts/core/theme/app_pallete.dart';
-import 'package:wearabouts/features/home/model/clothe.dart';
+import 'package:wearabouts/core/repositories/model/clothe.dart';
 import 'package:wearabouts/features/home/view/pages/clotheDetailPage.dart';
 
 class ClothesCard extends StatefulWidget {
@@ -66,7 +66,7 @@ class _ClothesCardState extends State<ClothesCard> {
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.star,
                             color: Colors.orange,
                           ),
