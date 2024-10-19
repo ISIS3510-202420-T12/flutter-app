@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wearabouts/features/home/model/clothe.dart';
+import 'package:wearabouts/core/repositories/model/clothe.dart';
 
 class FavoritesCard extends StatefulWidget {
   final Clothe item;
