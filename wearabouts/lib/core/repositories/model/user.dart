@@ -1,9 +1,50 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
-  User();
+  String id;
+  String username;
+  String password;
+  String email;
+  int sales;
+  int purchases;
+  String profilePic;
+  int rating;
+  List<String> labels;
+  String lattitude;
+  String longitude;
+  String city;
 
+  User(
+      {required this.id,
+      required this.username,
+      required this.password,
+      required this.email,
+      required this.sales,
+      required this.purchases,
+      required this.profilePic,
+      required this.rating,
+      required this.labels,
+      required this.lattitude,
+      required this.longitude,
+      required this.city});
+
+  // Método para crear una instancia de User a partir de un DocumentSnapshot
   factory User.fromDocument(DocumentSnapshot doc) {
-    return User();
+    final data = doc.data() as Map<String, dynamic>;
+
+    return User(
+        id: doc.id,
+        username: data['Username'] ?? '', // Campo 'username' del documento
+        password: data['Password'] ?? '', // Campo 'password' del documento
+        email: data['Email'] ?? '', // Campo 'email' del documento
+        sales: data['Sales'] ?? 0, // Campo 'sales', se convierte a int
+        purchases: data['Purchases'] ?? 0,
+        profilePic: data['ProfilePic'] ?? '',
+        rating: data['Rating'] ?? 0,
+        labels:
+            (data['Labels'] != null) ? List<String>.from(data['Labels']) : [],
+        longitude: data['Longitude'],
+        lattitude: data['Lattitude'],
+        city: data['City']);
   }
 }

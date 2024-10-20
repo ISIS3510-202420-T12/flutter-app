@@ -6,6 +6,7 @@ import 'package:wearabouts/features/home/view/widgets/clothesCard.dart';
 import 'package:wearabouts/features/home/viewmodel/marketPlaceViewModel.dart';
 
 import '../../../../core/theme/app_pallete.dart';
+import '../../../auth/viewmodel/userViewModel.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -93,14 +94,19 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const Divider(color: Colors.black),
-            Consumer<MarketPlaceViewModel>(
-              builder: (context, viewMoodel, child) {
+            Consumer2<MarketPlaceViewModel, UserViewModel>(
+              builder: (context, marketPlaceViewModel, userViewModel, child) {
+                // Ordena los items antes de mostrarlos
+                if (userViewModel.user != null) {
+                  marketPlaceViewModel
+                      .sortItemsByUserLabels(userViewModel.user!.labels);
+                }
+
                 return Wrap(
                   spacing: 10,
                   runSpacing: 10,
-                  children: viewMoodel.items.map((clothe) {
-                    return ClothesCard(
-                        item: clothe); // Tu widget para cada elemento
+                  children: marketPlaceViewModel.items.map((clothe) {
+                    return ClothesCard(item: clothe);
                   }).toList(),
                 );
               },

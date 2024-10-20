@@ -34,10 +34,9 @@ class Clothe {
           data['Description'] ?? '', // Campo 'description' del documento
       size: data['Size'] ?? 'Unknown', // Campo 'size' del documento
       price: data['Price'] ?? 0, // Campo 'price', se convierte a int
-      rating:
-          int.parse(data['Rating']) ?? 0, // Campo 'rating', se convierte a int
+      rating: data['Rating'], // Campo 'rating', se convierte a int
       seller: data['Seller'], // Campo 'seller'
-      imagesURLs: List<String>.from(data['Pictures'] ?? []), // Lista de URLs
+      imagesURLs: List<String>.from(data['ImagesURLs'] ?? []), // Lista de URLs
       labels: List<String>.from(data['Labels'] ?? []), // Lista de etiquetas
     );
   }

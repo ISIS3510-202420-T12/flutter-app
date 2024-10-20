@@ -9,6 +9,8 @@ import 'package:wearabouts/features/favorites/viewModel/favoritesViewModel.dart'
 import 'package:wearabouts/features/home/viewmodel/marketPlaceViewModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'features/auth/viewmodel/userViewModel.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -16,10 +18,20 @@ void main() async {
 
   ClothesRepository clothesRepository = ClothesRepository();
   UsersRepository usersRepository = UsersRepository();
+
+  //await populateFirestore();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
-        create: (_) => MarketPlaceViewModel(clothesRepository)),
-    ChangeNotifierProvider(create: (_) => FavoritesViewModel())
+      create: (context) {
+        UserViewModel userViewModel = UserViewModel(usersRepository);
+        userViewModel.fetchUser('JVILLATET1');
+        return userViewModel;
+      },
+    ),
+    ChangeNotifierProvider(
+        create: (_) =>
+            MarketPlaceViewModel(clothesRepository, usersRepository)),
+    ChangeNotifierProvider(create: (_) => FavoritesViewModel()),
   ], child: const MainApp()));
 }
 

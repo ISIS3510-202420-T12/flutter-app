@@ -44,9 +44,39 @@ class _ClothesCardState extends State<ClothesCard> {
               child: Column(
                 children: [
                   Container(
-                    color: Pallete.color2,
-                    child: Image.network(item.imagesURLs[0],
-                        height: 120, width: 180, fit: BoxFit.fitHeight),
+                    color: Colors.grey,
+                    child: SizedBox(
+                      height: 120,
+                      width: 180,
+                      child: Image.network(
+                        item.imagesURLs[0],
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child; // La imagen se ha cargado completamente
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        (loadingProgress.expectedTotalBytes ??
+                                            1)
+                                    : null,
+                              ),
+                            ); // Muestra un spinner mientras la imagen se carga
+                          }
+                        },
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return Image.asset(
+                            'assets/images/placeholder.png',
+                            fit: BoxFit.fitHeight,
+                          ); // Muestra una imagen local predeterminada si la carga falla
+                        },
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Text(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:money_formatter/money_formatter.dart';
 import 'package:provider/provider.dart';
+import 'package:wearabouts/features/auth/viewmodel/userViewModel.dart';
 import 'package:wearabouts/features/home/view/widgets/clothesKartCard.dart';
 import 'package:wearabouts/features/home/view/widgets/contextAppBar.dart';
 
@@ -16,6 +18,18 @@ class CheckoutPage extends StatefulWidget {
 class _CheckoutPageState extends State<CheckoutPage> {
   @override
   Widget build(BuildContext context) {
+    double subtotal =
+        Provider.of<MarketPlaceViewModel>(context, listen: false).obtainPrice();
+    double deliveryFee = 3000;
+    double total = subtotal + deliveryFee;
+    MoneyFormatter formatedSubTotal = MoneyFormatter(
+        amount: subtotal, settings: MoneyFormatterSettings(fractionDigits: 0));
+    MoneyFormatter formatedDeliveryFee = MoneyFormatter(
+        amount: deliveryFee,
+        settings: MoneyFormatterSettings(fractionDigits: 0));
+    MoneyFormatter formatedTotalPrice = MoneyFormatter(
+        amount: total, settings: MoneyFormatterSettings(fractionDigits: 0));
+
     return Scaffold(
       appBar: const ContextAppBar(),
       body: SingleChildScrollView(
@@ -25,25 +39,47 @@ class _CheckoutPageState extends State<CheckoutPage> {
             const Text("Checkout", style: TextStyle(fontSize: 24)),
             Consumer<MarketPlaceViewModel>(
               builder: (context, viewMoodel, child) {
-                return Column(
-                  children: viewMoodel.kart.map((clothe) {
-                    return ClothesKartCard(
-                        item: clothe); // Tu widget para cada elemento
-                  }).toList(),
+                return Container(
+                  decoration: BoxDecoration(
+                      color: Pallete.whiteColor,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 5, // Qué tan difusa es la sombra
+                          offset: Offset(0, 3), // Posición de la sombra (x, y)
+                        ),
+                      ]),
+                  child: Column(
+                    children: viewMoodel.kart.map((clothe) {
+                      return ClothesKartCard(
+                          item: clothe); // Tu widget para cada elemento
+                    }).toList(),
+                  ),
                 );
               },
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Text("Subtotal"), Text("20000")],
+              children: [
+                Text("Subtotal"),
+                Text(formatedSubTotal.output.symbolOnRight)
+              ],
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Text("Delivery fee"), Text("20000")],
+              children: [
+                Text("Delivery fee"),
+                Text(formatedDeliveryFee.output.symbolOnRight)
+              ],
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Text("Total"), Text("20000")],
+              children: [
+                Text("Total"),
+                Text(formatedTotalPrice.output.symbolOnRight)
+              ],
             ),
             const Divider(),
             const Row(
@@ -56,7 +92,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
               child: ElevatedButton(
                   onPressed: () {
                     Provider.of<MarketPlaceViewModel>(context, listen: false)
-                        .makePayment(context);
+                        .makePayment(context,
+                            Provider.of<UserViewModel>(context, listen: false));
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       duration: Duration(seconds: 1),
                       content: Text("Compra exitosa!"),

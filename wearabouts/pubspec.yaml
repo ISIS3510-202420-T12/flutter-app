@@ -18,7 +18,9 @@ dependencies:
   money_formatter: ^0.0.6
   cloud_firestore: ^5.4.4
   shared_preferences: ^2.3.2
-  mapbox_maps_flutter: ^2.3.0
+  
+  location: ^7.0.1
+
 
 
 
@@ -35,6 +37,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/dummyData/users.json
+    - assets/dummyData/clothes.json
 
 flutter_launcher_icons:
   android: "launcher_icon"

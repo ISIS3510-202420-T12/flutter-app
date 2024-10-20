@@ -79,13 +79,12 @@ class _ClotheDetailPageState extends State<ClotheDetailPage> {
                           height: 10,
                         ),
                         AddToKartButton(onTap: () {
-                          Provider.of<MarketPlaceViewModel>(context,
-                                  listen: false)
-                              .addToKart(item);
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            duration: Duration(seconds: 1),
-                            content: Text("Añadido al carrito"),
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: const Duration(seconds: 1),
+                            content: Text(Provider.of<MarketPlaceViewModel>(
+                                    context,
+                                    listen: false)
+                                .addToKart(item)),
                           ));
                         })
                       ],
