@@ -20,9 +20,8 @@ class AddToKartButton extends StatelessWidget {
               shadowColor: Pallete.transparentColor),
           child: const Text(
             "Add to kart",
-            style: TextStyle(fontSize: 24, color: Colors.white),
+            style: TextStyle(fontSize: 20, color: Colors.white),
           )),
     );
-    ;
   }
 }

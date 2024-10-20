@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_formatter/money_formatter.dart';
-import 'package:wearabouts/features/home/model/clothe.dart';
+import 'package:provider/provider.dart';
+import 'package:wearabouts/core/repositories/model/clothe.dart';
 import 'package:wearabouts/features/home/view/pages/checkoutPage.dart';
 import 'package:wearabouts/features/home/view/widgets/addToKart.dart';
 import 'package:wearabouts/features/home/view/widgets/buyBotton.dart';
@@ -46,33 +47,45 @@ class _ClotheDetailPageState extends State<ClotheDetailPage> {
                       )),
                 ),
                 const SizedBox(height: 20),
-                Text(item.title, style: const TextStyle(fontSize: 24)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
-                      "S size | No use",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w100),
+                    Column(
+                      children: [
+                        Text(item.title, style: const TextStyle(fontSize: 24)),
+                        const Text(
+                          "S size | No use",
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.w100),
+                        ),
+                      ],
                     ),
                     Column(
                       children: [
                         BuyButton(
                           onTap: () {
-                            MarketPlaceViewModel().addToKart(item);
+                            Provider.of<MarketPlaceViewModel>(context,
+                                    listen: false)
+                                .addToKart(item);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const CheckoutPage()),
+                            );
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         AddToKartButton(onTap: () {
-                          MarketPlaceViewModel().addToKart(item);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const CheckoutPage()),
-                          );
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: const Duration(seconds: 1),
+                            content: Text(Provider.of<MarketPlaceViewModel>(
+                                    context,
+                                    listen: false)
+                                .addToKart(item)),
+                          ));
                         })
                       ],
                     )
