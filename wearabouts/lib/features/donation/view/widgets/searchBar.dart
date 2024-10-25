@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wearabouts/core/theme/app_pallete.dart';
+import 'package:wearabouts/features/donation/view/pages/donationMapPage.dart';
 
 class SearchBarWithMap extends StatelessWidget {
   const SearchBarWithMap({super.key});
@@ -41,7 +42,13 @@ class SearchBarWithMap extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const DonationMapPage()),
+              );
+            },
             icon: Icon(Icons.map, color: Pallete.fontColor1),
           ),
         ),

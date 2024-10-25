@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:wearabouts/core/theme/app_pallete.dart';
-import 'package:wearabouts/features/donation/widgets/donation_statistics_card.dart';
-import 'package:wearabouts/features/donation/widgets/categoryIcon.dart';
-import 'package:wearabouts/features/donation/widgets/featuredCard.dart';
-import 'package:wearabouts/features/donation/widgets/searchBar.dart';
-import 'package:wearabouts/core/widgets/appBar.dart';
-import 'package:wearabouts/core/widgets/bottomBar.dart';
+import 'package:wearabouts/features/donation/view/widgets/donation_statistics_card.dart';
+import 'package:wearabouts/features/donation/view/widgets/categoryIcon.dart';
+import 'package:wearabouts/features/donation/view/widgets/featuredCard.dart';
+import 'package:wearabouts/features/donation/view/widgets/searchBar.dart';
 
 class DonationPage extends StatelessWidget {
   const DonationPage({super.key});

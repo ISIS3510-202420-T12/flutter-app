@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:wearabouts/core/repositories/clothesRepository.dart';
@@ -15,12 +16,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseFirestore.instance;
-
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  analytics.setAnalyticsCollectionEnabled(true);
+  FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
   ClothesRepository clothesRepository = ClothesRepository();
   UsersRepository usersRepository = UsersRepository();
 
   //await populateFirestore();
   runApp(MultiProvider(providers: [
+    Provider<FirebaseAnalytics>.value(value: analytics),
+    Provider<FirebaseAnalyticsObserver>.value(value: observer),
     ChangeNotifierProvider(
       create: (context) {
         UserViewModel userViewModel = UserViewModel(usersRepository);
@@ -42,6 +48,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: "WearAbouts",
+        debugShowCheckedModeBanner: false,
         theme: AppTheme.lightThemeMode,
         home: const FirstTimePage());
   }
