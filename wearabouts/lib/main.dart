@@ -6,6 +6,7 @@ import 'package:wearabouts/core/repositories/usersRepository.dart';
 import 'package:wearabouts/core/theme/theme.dart';
 import 'package:wearabouts/features/auth/view/pages/firstTimePage.dart';
 import 'package:provider/provider.dart';
+import 'package:wearabouts/features/donation/viewModel/donationViewModel.dart';
 import 'package:wearabouts/features/favorites/viewModel/favoritesViewModel.dart';
 import 'package:wearabouts/features/home/viewmodel/marketPlaceViewModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -38,6 +39,7 @@ void main() async {
         create: (_) =>
             MarketPlaceViewModel(clothesRepository, usersRepository)),
     ChangeNotifierProvider(create: (_) => FavoritesViewModel()),
+    ChangeNotifierProvider(create: (_) => DonationViewModel()),
   ], child: const MainApp()));
 }
 

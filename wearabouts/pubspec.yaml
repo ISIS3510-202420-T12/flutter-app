@@ -20,7 +20,7 @@ dependencies:
   shared_preferences: ^2.3.2
   firebase_analytics: ^11.3.3
   location: ^7.0.1
-  flutter_map: ^7.0.2
+  google_maps_flutter: ^2.9.0
   latlong2: ^0.9.1
 
 
