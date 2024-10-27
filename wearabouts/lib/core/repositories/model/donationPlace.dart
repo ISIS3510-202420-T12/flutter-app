@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DonationPlace {
   String id;
-  String lattitude;
-  String longitude;
+  double lattitude;
+  double longitude;
   String name;
   String description;
   String image;
@@ -23,8 +23,8 @@ class DonationPlace {
 
     return DonationPlace(
       id: doc.id,
-      lattitude: data['Lattitude'] ?? '', // Campo 'lattitude' del documento
-      longitude: data['Longitude'] ?? '', // Campo 'longitude' del documento
+      lattitude: data['Latitude'], // Campo 'lattitude' del documento
+      longitude: data['Longitude'], // Campo 'longitude' del documento
       name: data['Name'] ?? '', // Campo 'name' del documento
       description:
           data['Description'] ?? '', // Campo 'description' del documento

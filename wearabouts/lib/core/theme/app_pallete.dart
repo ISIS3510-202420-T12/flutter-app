@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Pallete {
+  static Color color0 = const Color.fromARGB(255, 17, 44, 61);
   static Color color1 = const Color.fromRGBO(34, 87, 121, 1);
   static Color color2 = const Color.fromRGBO(55, 164, 155, 1);
   static Color color3 = const Color.fromRGBO(87, 204, 152, 1);

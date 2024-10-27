@@ -1,11 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:wearabouts/core/repositories/model/donationPlace.dart';
+
+import '../../../core/repositories/donationPlacesRepository.dart';
 
 class DonationViewModel with ChangeNotifier {
+  final DonationPlacesRepository _donationPlacesRepository;
+
+  DonationViewModel(this._donationPlacesRepository);
+
+  List<DonationPlace> donationPlaces = [];
   Location locationController = Location();
   LocationData? currentLocation;
 
   LocationData? get locationData => currentLocation;
+
+  setDonationPlaces(List<DonationPlace> newlist) {
+    donationPlaces = newlist;
+    notifyListeners();
+  }
+
+  Future<void> populate() async {
+    try {
+      List<DonationPlace> fetchedItems =
+          await _donationPlacesRepository.fetchDonationPlaces();
+      setDonationPlaces(fetchedItems);
+      print("donation places loaded");
+    } catch (e) {
+      print('Error fetching items: $e');
+    }
+  }
 
   Future<void> fetchLocation() async {
     bool serviceEnabled = await locationController.serviceEnabled();
