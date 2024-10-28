@@ -1,30 +1,30 @@
-import 'model/clothe.dart';
+import 'model/Campaign.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ClothesRepository {
+class CampaignsRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  Future<List<Clothe>> fetchClothes() async {
+  Future<List<Campaign>> fetchCampaigns() async {
     try {
-      QuerySnapshot querySnapshot = await _db.collection('Clothes').get();
+      QuerySnapshot querySnapshot = await _db.collection('Campaigns').get();
 
       // Utiliza un ciclo que maneja errores individuales
-      List<Clothe> clothesList = [];
+      List<Campaign> CampaignsList = [];
 
       for (var doc in querySnapshot.docs) {
         try {
           // Intenta cargar cada documento
-          Clothe clothe = Clothe.fromDocument(doc);
-          clothesList.add(clothe);
+          Campaign campaign = Campaign.fromDocument(doc);
+          CampaignsList.add(campaign);
         } catch (e) {
           // En caso de error con un documento, se captura pero no se interrumpe el ciclo
           print("Error loading document ${doc.id}: $e");
         }
       }
 
-      return clothesList;
+      return CampaignsList;
     } catch (e) {
-      throw Exception("Error fetching clothes: $e");
+      throw Exception("Error fetching Campaigns: $e");
     }
   }
 }

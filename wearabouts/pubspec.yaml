@@ -18,8 +18,11 @@ dependencies:
   money_formatter: ^0.0.6
   cloud_firestore: ^5.4.4
   shared_preferences: ^2.3.2
-  
+  firebase_analytics: ^11.3.3
   location: ^7.0.1
+  google_maps_flutter: ^2.9.0
+  latlong2: ^0.9.1
+  carousel_slider: ^5.0.0
 
 
 
@@ -29,6 +32,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^4.0.0
   flutter_launcher_icons: ^0.14.1
+  
   
   
 

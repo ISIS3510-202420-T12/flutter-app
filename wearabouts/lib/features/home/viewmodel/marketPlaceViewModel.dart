@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wearabouts/core/repositories/clothesRepository.dart';
 import 'package:wearabouts/core/repositories/model/clothe.dart';
 import 'package:wearabouts/core/repositories/usersRepository.dart';
-
+import 'package:firebase_analytics/firebase_analytics.dart';
 import '../../../core/repositories/model/user.dart';
 import '../../auth/viewmodel/userViewModel.dart';
 
@@ -14,6 +14,8 @@ class MarketPlaceViewModel with ChangeNotifier {
 
   List<Clothe> items = [];
   List<Clothe> kart = [];
+  double totalPrice = 0;
+  double deliveryfee = 3000;
 
   setItems(List<Clothe> newlist) {
     items = newlist;
@@ -34,7 +36,6 @@ class MarketPlaceViewModel with ChangeNotifier {
       List<Clothe> fetchedItems = await _clothesRepository.fetchClothes();
       setItems(fetchedItems);
       print("Market items loaded");
-      notifyListeners();
     } catch (e) {
       print('Error fetching items: $e');
     }
@@ -43,6 +44,7 @@ class MarketPlaceViewModel with ChangeNotifier {
   addToKart(Clothe _item_) {
     if (!kart.contains(_item_)) {
       kart.add(_item_);
+      obtainPrice();
       notifyListeners();
       return "Item added to the kart";
     } else {
@@ -50,7 +52,8 @@ class MarketPlaceViewModel with ChangeNotifier {
     }
   }
 
-  void makePayment(BuildContext context, UserViewModel userViewModel) async {
+  void makePayment(BuildContext context, UserViewModel userViewModel,
+      FirebaseAnalytics analytics) async {
     try {
       Set<String> allLabels = {};
 
@@ -69,6 +72,28 @@ class MarketPlaceViewModel with ChangeNotifier {
 
         // Notificar a los listeners del UserViewModel que el usuario ha sido actualizado
         userViewModel.setUser(currentUser);
+
+        await analytics.logEvent(
+          name: "purchase",
+          parameters: {
+            "User": currentUser.username,
+            "Total": totalPrice,
+          },
+        );
+
+        for (var item in kart) {
+          for (String label in item.labels) {
+            await analytics.logEvent(
+              name: "label_purchase",
+              parameters: {
+                "label": label,
+                "city": currentUser.city,
+              },
+            );
+          }
+        }
+        kart = [];
+        totalPrice = 0;
         notifyListeners();
       } else {
         print('No user is logged in.');
@@ -98,12 +123,12 @@ class MarketPlaceViewModel with ChangeNotifier {
         "Items organizados"); // Notifica a los listeners que los items fueron actualizados
   }
 
-  double obtainPrice() {
-    double totalPrice = 0;
+  void obtainPrice() {
+    double totalPrice_ = 0;
     for (var kartItem in kart) {
-      totalPrice += kartItem.price;
+      totalPrice_ += kartItem.price;
     }
 
-    return totalPrice;
+    totalPrice = totalPrice_;
   }
 }

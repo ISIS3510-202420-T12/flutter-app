@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:wearabouts/core/theme/app_pallete.dart';
+import 'package:wearabouts/features/donation/view/pages/donationMapPage.dart';
 
-class SearchBarWithMap extends StatelessWidget {
-  const SearchBarWithMap({super.key});
+class MapPlaceSearchBar extends StatelessWidget {
+  const MapPlaceSearchBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class SearchBarWithMap extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     decoration: InputDecoration(
-                      hintText: "Search here for ONGs",
+                      hintText: "Search here for donation places",
                       hintStyle: TextStyle(color: Pallete.fontColor1),
                       border: InputBorder.none,
                     ),
@@ -32,17 +33,6 @@ class SearchBarWithMap extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-        ),
-        const SizedBox(width: 8),
-        Container(
-          decoration: BoxDecoration(
-            color: Pallete.color2,
-            shape: BoxShape.circle,
-          ),
-          child: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.map, color: Pallete.fontColor1),
           ),
         ),
       ],
