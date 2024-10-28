@@ -2,18 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Campaign {
   String id;
-  int goal;
+  double goal;
   String image;
   String name;
-  DocumentReference ong;
-  int reached;
+
+  double reached;
 
   Campaign({
     required this.id,
     required this.goal,
     required this.image,
     required this.name,
-    required this.ong,
     required this.reached,
   });
 
@@ -23,12 +22,14 @@ class Campaign {
 
     return Campaign(
       id: doc.id,
-      goal: data['Goal'] ?? 0, // Campo 'goal', se convierte a int
-      image: data['Image'] ?? '', // Campo 'image'
-      name: data['Name'] ?? '', // Campo 'name'
-      ong: data['Ong']
-          as DocumentReference, // Campo 'ong' como referencia de documento
-      reached: data['Reached'] ?? 0, // Campo 'reached', se convierte a int
+      goal: (data['Goal'] is int
+          ? (data['Goal'] as int).toDouble()
+          : data['Goal'] ?? 0.0),
+      image: data['Image'] ?? '',
+      name: data['Name'] ?? '',
+      reached: (data['Reached'] is int
+          ? (data['Reached'] as int).toDouble()
+          : data['Reached'] ?? 0.0),
     );
   }
 }

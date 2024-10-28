@@ -1,15 +1,27 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:wearabouts/core/repositories/campaignsRepository.dart';
+import 'package:wearabouts/core/repositories/donationsRepository.dart';
+import 'package:wearabouts/core/repositories/model/Campaign.dart';
 import 'package:wearabouts/core/repositories/model/donationPlace.dart';
+import 'package:wearabouts/core/repositories/usersRepository.dart';
+import 'package:wearabouts/features/auth/viewmodel/userViewModel.dart';
 
 import '../../../core/repositories/donationPlacesRepository.dart';
+import '../../../core/repositories/model/user.dart';
 
 class DonationViewModel with ChangeNotifier {
   final DonationPlacesRepository _donationPlacesRepository;
+  final CampaignsRepository _campaignsRepository;
+  final DonationsRepository _donationsRepository;
+  final UsersRepository _usersRepository;
 
-  DonationViewModel(this._donationPlacesRepository);
+  DonationViewModel(this._donationPlacesRepository, this._campaignsRepository,
+      this._donationsRepository, this._usersRepository);
 
   List<DonationPlace> donationPlaces = [];
+  List<Campaign> campaigns = [];
   Location locationController = Location();
   LocationData? currentLocation;
 
@@ -20,10 +32,18 @@ class DonationViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  setCampaigns(List<Campaign> newList) {
+    campaigns = newList;
+  }
+
   Future<void> populate() async {
     try {
       List<DonationPlace> fetchedItems =
           await _donationPlacesRepository.fetchDonationPlaces();
+
+      List<Campaign> campaignList = await _campaignsRepository.fetchCampaigns();
+
+      setCampaigns(campaignList);
       setDonationPlaces(fetchedItems);
       print("donation places loaded");
     } catch (e) {
@@ -51,5 +71,29 @@ class DonationViewModel with ChangeNotifier {
 
     currentLocation = await locationController.getLocation();
     notifyListeners();
+  }
+
+  Future<void> addDonation(String amount, UserViewModel userViewModel,
+      FirebaseAnalytics analytics, Campaign campaign) async {
+    double money = double.parse(amount);
+
+    User? currentUser = userViewModel.user;
+
+    if (currentUser != null) {
+      _donationsRepository.addDonation(
+          campaignId: campaign.id,
+          date: DateTime.now(),
+          quantity: money,
+          userId: currentUser.id);
+
+      await analytics.logEvent(name: "donation", parameters: {
+        "User": currentUser.username,
+        "Quantity": money,
+        "Campaing": campaign.name,
+        "Date": DateTime.now().toString()
+      });
+    } else {
+      print("No se encontro al usuario actual");
+    }
   }
 }

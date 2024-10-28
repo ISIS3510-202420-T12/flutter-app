@@ -4,7 +4,7 @@ class Donation {
   String id;
   DocumentReference campaign;
   DateTime date;
-  int quantity;
+  double quantity;
   DocumentReference user;
 
   Donation({
@@ -25,9 +25,8 @@ class Donation {
           as DocumentReference, // Campo 'campaign' como referencia de documento
       date: (data['Date'] as Timestamp)
           .toDate(), // Campo 'date' convertido a DateTime
-      quantity: data['Quantity'] ?? 0, // Campo 'quantity', se convierte a int
-      user: data['User']
-          as DocumentReference, // Campo 'user' como referencia de documento
+      quantity: data['Quantity'] ?? 0.0,
+      user: data['User'] as DocumentReference,
     );
   }
 }

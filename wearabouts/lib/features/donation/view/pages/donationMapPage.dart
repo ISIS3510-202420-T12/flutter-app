@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:provider/provider.dart';
+import 'package:wearabouts/core/repositories/model/campaign.dart';
 import 'package:wearabouts/features/donation/view/widgets/mapPlaceSearchBar.dart';
 
 import 'package:wearabouts/features/donation/viewModel/donationViewModel.dart';
@@ -23,10 +24,6 @@ class _DonationMapPageState extends State<DonationMapPage> {
     // TODO: implement initState
     super.initState();
     Provider.of<DonationViewModel>(context, listen: false).fetchLocation();
-
-    Future.microtask(() {
-      Provider.of<DonationViewModel>(context, listen: false).populate();
-    });
   }
 
   @override

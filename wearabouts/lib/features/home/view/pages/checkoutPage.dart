@@ -113,7 +113,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
                                     duration: Duration(seconds: 1),
-                                    content: Text("Compra exitosa!"),
+                                    content:
+                                        Text("Your order has been procesed!"),
                                   ));
                                 },
                           style: ElevatedButton.styleFrom(
