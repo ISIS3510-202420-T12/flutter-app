@@ -55,24 +55,34 @@ class MarketPlaceViewModel with ChangeNotifier {
   void makePayment(BuildContext context, UserViewModel userViewModel,
       FirebaseAnalytics analytics) async {
     try {
-      Set<String> allLabels = {};
+      // Inicializa un mapa para acumular las frecuencias de las etiquetas
+      Map<String, int> allLabels = {};
 
       for (Clothe clothe in kart) {
-        allLabels.addAll(clothe.labels);
+        for (String label in clothe.labels) {
+          // Incrementa la frecuencia de cada etiqueta encontrada en los items del carrito
+          allLabels[label] = (allLabels[label] ?? 0) + 1;
+        }
       }
 
       User? currentUser = userViewModel.user;
 
       if (currentUser != null) {
-        Set<String> updatedLabels = {...currentUser.labels, ...allLabels};
+        // Actualiza el mapa de etiquetas del usuario sumando las frecuencias del carrito
+        Map<String, int> updatedLabels = {...currentUser.labels};
 
-        currentUser.labels = updatedLabels.toList();
+        allLabels.forEach((label, frequency) {
+          updatedLabels[label] = (updatedLabels[label] ?? 0) + frequency;
+        });
+
+        currentUser.labels = updatedLabels;
         await _usersRepository.updateUserLabels(
             currentUser.id, currentUser.labels);
 
-        // Notificar a los listeners del UserViewModel que el usuario ha sido actualizado
+        // Notifica a los listeners del UserViewModel que el usuario ha sido actualizado
         userViewModel.setUser(currentUser);
 
+        // Registra el evento de compra con Firebase Analytics
         await analytics.logEvent(
           name: "purchase",
           parameters: {
@@ -92,6 +102,8 @@ class MarketPlaceViewModel with ChangeNotifier {
             );
           }
         }
+
+        // Limpia el carrito y restablece el precio total
         kart = [];
         totalPrice = 0;
         notifyListeners();
@@ -103,22 +115,20 @@ class MarketPlaceViewModel with ChangeNotifier {
     }
   }
 
-  void sortItemsByUserLabels(List<String> userLabels) {
-    // Ordena los items de acuerdo con las etiquetas del usuario
+  void sortItemsByUserLabels(Map<String, int> userLabels) {
+    // Ordena los items de acuerdo con la frecuencia de las etiquetas del usuario
     items.sort((a, b) {
-      // Si el item 'a' tiene una etiqueta que coincide con las del usuario, se prioriza
-      bool aHasLabel = a.labels.any((label) => userLabels.contains(label));
-      bool bHasLabel = b.labels.any((label) => userLabels.contains(label));
+      // Calcula una "prioridad" para cada item sumando las frecuencias de las etiquetas coincidentes
+      int priorityA = a.labels
+          .where((label) => userLabels.containsKey(label))
+          .fold(0, (sum, label) => sum + userLabels[label]!);
+      int priorityB = b.labels
+          .where((label) => userLabels.containsKey(label))
+          .fold(0, (sum, label) => sum + userLabels[label]!);
 
-      if (aHasLabel && !bHasLabel) {
-        return -1; // 'a' debe aparecer antes
-      } else if (!aHasLabel && bHasLabel) {
-        return 1; // 'b' debe aparecer antes
-      } else {
-        return 0; // De lo contrario, quedan en el mismo lugar
-      }
+      // Compara las prioridades: el item con mayor prioridad debe aparecer primero
+      return priorityB.compareTo(priorityA);
     });
-
     print(
         "Items organizados"); // Notifica a los listeners que los items fueron actualizados
   }

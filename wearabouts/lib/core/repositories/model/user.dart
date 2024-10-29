@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
@@ -9,7 +11,7 @@ class User {
   int purchases;
   String profilePic;
   int rating;
-  List<String> labels;
+  Map<String, int> labels;
   String lattitude;
   String longitude;
   String city;
@@ -41,8 +43,9 @@ class User {
         purchases: data['Purchases'] ?? 0,
         profilePic: data['ProfilePic'] ?? '',
         rating: data['Rating'] ?? 0,
-        labels:
-            (data['Labels'] != null) ? List<String>.from(data['Labels']) : [],
+        labels: (data['Labels'] != null)
+            ? Map<String, int>.from(data['Labels'])
+            : {},
         longitude: data['Longitude'],
         lattitude: data['Lattitude'],
         city: data['City']);

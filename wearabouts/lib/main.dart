@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:wearabouts/core/repositories/activitiesRepository.dart';
 import 'package:wearabouts/core/repositories/campaignsRepository.dart';
 import 'package:wearabouts/core/repositories/clothesRepository.dart';
 import 'package:wearabouts/core/repositories/donationPlacesRepository.dart';
@@ -42,6 +43,7 @@ void main() async {
   DonationPlacesRepository donationPlacesRepository =
       DonationPlacesRepository();
   DonationsRepository donationsRepository = DonationsRepository();
+  ActivitiesRepository activitiesRepository = ActivitiesRepository();
 
   //await populateFirestore();
   runApp(MultiProvider(providers: [
