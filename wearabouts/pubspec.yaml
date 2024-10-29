@@ -23,6 +23,7 @@ dependencies:
   google_maps_flutter: ^2.9.0
   latlong2: ^0.9.1
   carousel_slider: ^5.0.0
+  flutter_local_notifications: ^17.2.4
 
 
 

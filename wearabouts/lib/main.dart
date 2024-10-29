@@ -16,7 +16,8 @@ import 'package:wearabouts/features/donation/viewModel/donationViewModel.dart';
 import 'package:wearabouts/features/favorites/viewModel/favoritesViewModel.dart';
 import 'package:wearabouts/features/home/viewmodel/marketPlaceViewModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:wearabouts/services/localNotifications/notificacionService.dart';
+import 'package:timezone/data/latest.dart' as tz;
 import 'features/auth/viewmodel/userViewModel.dart';
 
 class MyHttpOverrides extends HttpOverrides {
@@ -31,6 +32,8 @@ class MyHttpOverrides extends HttpOverrides {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
+  await NotificacionService.init();
+  tz.initializeTimeZones();
   await Firebase.initializeApp();
   FirebaseFirestore.instance;
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
