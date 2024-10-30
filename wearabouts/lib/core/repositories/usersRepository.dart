@@ -38,7 +38,7 @@ class UsersRepository {
     }
   }
 
-  Future<void> updateUserLabels(String userId, List<String> labels) async {
+  Future<void> updateUserLabels(String userId, Map<String, int> labels) async {
     try {
       await _db.collection('Users').doc(userId).update({
         'Labels': labels,

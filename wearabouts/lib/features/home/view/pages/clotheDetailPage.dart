@@ -3,6 +3,7 @@ import 'package:money_formatter/money_formatter.dart';
 import 'package:provider/provider.dart';
 import 'package:wearabouts/core/repositories/model/clothe.dart';
 import 'package:wearabouts/features/home/view/pages/checkoutPage.dart';
+import 'package:wearabouts/features/home/view/widgets/addToFavoritesButton.dart';
 import 'package:wearabouts/features/home/view/widgets/addToKart.dart';
 import 'package:wearabouts/features/home/view/widgets/buyBotton.dart';
 import 'package:wearabouts/features/home/view/widgets/contextAppBar.dart';
@@ -59,6 +60,7 @@ class _ClotheDetailPageState extends State<ClotheDetailPage> {
                           style: TextStyle(
                               fontSize: 22, fontWeight: FontWeight.w100),
                         ),
+                        AddToFavoritesButton(clothe: item)
                       ],
                     ),
                     Column(
