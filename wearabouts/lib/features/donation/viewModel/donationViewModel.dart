@@ -80,8 +80,8 @@ class DonationViewModel with ChangeNotifier {
     double money = double.parse(amount);
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    bool alreadyDonated = prefs.getBool('Donated') ?? false;
-
+    //bool alreadyDonated = prefs.getBool('Donated') ?? false;
+    bool alreadyDonated = false;
     User? currentUser = userViewModel.user;
 
     NotificationService.showInstantNotification(
