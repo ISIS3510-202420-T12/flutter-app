@@ -1,12 +1,14 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wearabouts/core/repositories/campaignsRepository.dart';
 import 'package:wearabouts/core/repositories/donationsRepository.dart';
 import 'package:wearabouts/core/repositories/model/Campaign.dart';
 import 'package:wearabouts/core/repositories/model/donationPlace.dart';
 import 'package:wearabouts/core/repositories/usersRepository.dart';
 import 'package:wearabouts/features/auth/viewmodel/userViewModel.dart';
+import 'package:wearabouts/services/localNotifications/notificacionService.dart';
 
 import '../../../core/repositories/donationPlacesRepository.dart';
 import '../../../core/repositories/model/user.dart';
@@ -76,8 +78,23 @@ class DonationViewModel with ChangeNotifier {
   Future<void> addDonation(String amount, UserViewModel userViewModel,
       FirebaseAnalytics analytics, Campaign campaign) async {
     double money = double.parse(amount);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    bool alreadyDonated = prefs.getBool('Donated') ?? false;
 
     User? currentUser = userViewModel.user;
+
+    NotificationService.showInstantNotification(
+        "You have donated $amount pesos", "Thank you");
+
+    if (!alreadyDonated) {
+      NotificationService.scheduleNotification(
+          "It's been a while",
+          "Your donations can help a lot of people",
+          DateTime.now().add(Duration(seconds: 10)));
+    }
+
+    await prefs.setBool('Donated', true);
 
     if (currentUser != null) {
       _donationsRepository.addDonation(

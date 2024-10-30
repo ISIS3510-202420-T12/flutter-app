@@ -21,8 +21,11 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     // Inicializa el ViewModel y llena la lista de items
+
     Future.microtask(() {
-      Provider.of<MarketPlaceViewModel>(context, listen: false).populate();
+      final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+      Provider.of<MarketPlaceViewModel>(context, listen: false)
+          .populate(userViewModel);
     });
   }
 
@@ -85,6 +88,31 @@ class _HomePageState extends State<HomePage> {
                   fit: BoxFit.fitHeight,
                 ),
               ),
+            ),
+            Consumer<MarketPlaceViewModel>(
+              builder: (context, marketPlaceViewModel, child) {
+                // Ordena los items antes de mostrarlos
+
+                return Column(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [Text("Featured")],
+                      ),
+                    ),
+                    const Divider(color: Colors.black),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: marketPlaceViewModel.featured.map((clothe) {
+                        return ClothesCard(item: clothe);
+                      }).toList(),
+                    ),
+                  ],
+                );
+              },
             ),
             const Padding(
               padding: EdgeInsets.all(12.0),

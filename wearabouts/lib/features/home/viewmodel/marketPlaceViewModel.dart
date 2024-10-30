@@ -14,6 +14,7 @@ class MarketPlaceViewModel with ChangeNotifier {
 
   List<Clothe> items = [];
   List<Clothe> kart = [];
+  List<Clothe> featured = [];
   double totalPrice = 0;
   double deliveryfee = 3000;
 
@@ -31,10 +32,11 @@ class MarketPlaceViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> populate() async {
+  Future<void> populate(UserViewModel userViewModel) async {
     try {
       List<Clothe> fetchedItems = await _clothesRepository.fetchClothes();
       setItems(fetchedItems);
+      updateFeaturedList(userViewModel.user?.labels ?? {});
       print("Market items loaded");
     } catch (e) {
       print('Error fetching items: $e');
@@ -140,5 +142,37 @@ class MarketPlaceViewModel with ChangeNotifier {
     }
 
     totalPrice = totalPrice_;
+  }
+
+  void updateFeaturedList(Map<String, int> userLabels) {
+    // Encuentra la etiqueta más frecuente
+    String? mostFrequentLabel;
+    int maxFrequency = 0;
+
+    userLabels.forEach((label, frequency) {
+      if (frequency > maxFrequency) {
+        maxFrequency = frequency;
+        mostFrequentLabel = label;
+      }
+    });
+
+    // Verifica que haya una etiqueta válida antes de continuar
+    if (mostFrequentLabel != null) {
+      // Filtra los items que contienen la etiqueta más frecuente y no están ya en featured
+      featured = items
+          .where((item) {
+            return item.labels.contains(mostFrequentLabel) &&
+                !featured.contains(item);
+          })
+          .take(4)
+          .toList(); // Limita a un máximo de 4 elementos
+
+      // Elimina de items los elementos que están en featured
+      items.removeWhere((item) => featured.contains(item));
+
+      notifyListeners();
+      print(
+          "Featured list updated with items containing label: $mostFrequentLabel");
+    }
   }
 }

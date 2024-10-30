@@ -29,6 +29,17 @@ class _DonationPageState extends State<DonationPage> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController inputDonationController = TextEditingController();
+    inputDonationController.addListener(() {
+      String filteredText =
+          inputDonationController.text.replaceAll(RegExp(r'[^0-9]'), '');
+      if (inputDonationController.text != filteredText) {
+        inputDonationController.text = filteredText;
+        inputDonationController.selection = TextSelection.fromPosition(
+          TextPosition(offset: inputDonationController.text.length),
+        );
+      }
+    });
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
@@ -80,8 +91,6 @@ class _DonationPageState extends State<DonationPage> {
             Consumer<DonationViewModel>(builder: (context, viewModel, child) {
               return Column(
                 children: viewModel.campaigns.map((camp) {
-                  TextEditingController inputDonationController =
-                      TextEditingController();
                   return FeaturedCard(
                     title: camp.name,
                     goal: ("\$" +

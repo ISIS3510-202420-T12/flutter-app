@@ -1,7 +1,11 @@
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'user.g.dart';
+
+@JsonSerializable()
 class User {
   String id;
   String username;
@@ -12,8 +16,8 @@ class User {
   String profilePic;
   int rating;
   Map<String, int> labels;
-  String lattitude;
-  String longitude;
+  double lattitude;
+  double longitude;
   String city;
 
   User(
@@ -47,7 +51,11 @@ class User {
             ? Map<String, int>.from(data['Labels'])
             : {},
         longitude: data['Longitude'],
-        lattitude: data['Lattitude'],
+        lattitude: data['Latitude'],
         city: data['City']);
   }
+
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserToJson(this);
 }

@@ -1,13 +1,13 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-class NotificacionService {
+class NotificationService {
   static final FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
   static Future<void> init() async {
     AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings("notificationIcon.png");
+        const AndroidInitializationSettings("@mipmap/ic_launcher");
 
     InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);

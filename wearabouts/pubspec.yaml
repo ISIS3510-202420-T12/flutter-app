@@ -24,6 +24,9 @@ dependencies:
   latlong2: ^0.9.1
   carousel_slider: ^5.0.0
   flutter_local_notifications: ^17.2.4
+  json_annotation: ^4.9.0
+  build_runner: ^2.3.3
+  
 
 
 
@@ -33,7 +36,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^4.0.0
   flutter_launcher_icons: ^0.14.1
-  
+  json_serializable: ^6.8.0
   
   
 
