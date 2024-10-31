@@ -35,7 +35,9 @@ class DonationViewModel with ChangeNotifier {
   }
 
   setCampaigns(List<Campaign> newList) {
+    newList.sort((a, b) => b.reached.compareTo(a.reached));
     campaigns = newList;
+    notifyListeners();
   }
 
   Future<void> populate() async {
@@ -90,7 +92,9 @@ class DonationViewModel with ChangeNotifier {
     if (!alreadyDonated) {
       NotificationService.scheduleNotification(
           "It's been a while",
-          "Your donations can help a lot of people",
+          "Your donations can help a lot of people. You still can donate to '" +
+              campaign.name +
+              "'. We are getting close!",
           DateTime.now().add(Duration(seconds: 10)));
     }
 

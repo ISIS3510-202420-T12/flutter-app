@@ -49,6 +49,20 @@ class ClothesRepository {
     }
   }
 
+  Future<void> removeFavorite(String clotheId) async {
+    // Obtener la lista actual de favoritos
+    List<Clothe> currentFavorites = await fetchFavorites();
+
+    // Eliminar el clothe de la lista
+    currentFavorites.removeWhere((clothe) => clothe.id == clotheId);
+
+    // Guardar la lista actualizada en SharedPreferences
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String encodedList =
+        jsonEncode(currentFavorites.map((e) => e.toJson()).toList());
+    await prefs.setString('favorites', encodedList);
+  }
+
   Future<void> clearFavorites() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     // Elimina la lista de favoritos de SharedPreferences

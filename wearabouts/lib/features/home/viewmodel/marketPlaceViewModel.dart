@@ -57,12 +57,10 @@ class MarketPlaceViewModel with ChangeNotifier {
   void makePayment(BuildContext context, UserViewModel userViewModel,
       FirebaseAnalytics analytics) async {
     try {
-      // Inicializa un mapa para acumular las frecuencias de las etiquetas
       Map<String, int> allLabels = {};
 
       for (Clothe clothe in kart) {
         for (String label in clothe.labels) {
-          // Incrementa la frecuencia de cada etiqueta encontrada en los items del carrito
           allLabels[label] = (allLabels[label] ?? 0) + 1;
         }
       }
@@ -70,7 +68,6 @@ class MarketPlaceViewModel with ChangeNotifier {
       User? currentUser = userViewModel.user;
 
       if (currentUser != null) {
-        // Actualiza el mapa de etiquetas del usuario sumando las frecuencias del carrito
         Map<String, int> updatedLabels = {...currentUser.labels};
 
         allLabels.forEach((label, frequency) {
@@ -81,7 +78,6 @@ class MarketPlaceViewModel with ChangeNotifier {
         await _usersRepository.updateUserLabels(
             currentUser.id, currentUser.labels);
 
-        // Notifica a los listeners del UserViewModel que el usuario ha sido actualizado
         userViewModel.setUser(currentUser);
 
         // Registra el evento de compra con Firebase Analytics
@@ -105,7 +101,7 @@ class MarketPlaceViewModel with ChangeNotifier {
           }
         }
 
-        // Limpia el carrito y restablece el precio total
+        // Limpia el carrito
         kart = [];
         totalPrice = 0;
         notifyListeners();
@@ -118,9 +114,7 @@ class MarketPlaceViewModel with ChangeNotifier {
   }
 
   void sortItemsByUserLabels(Map<String, int> userLabels) {
-    // Ordena los items de acuerdo con la frecuencia de las etiquetas del usuario
     items.sort((a, b) {
-      // Calcula una "prioridad" para cada item sumando las frecuencias de las etiquetas coincidentes
       int priorityA = a.labels
           .where((label) => userLabels.containsKey(label))
           .fold(0, (sum, label) => sum + userLabels[label]!);
@@ -128,11 +122,9 @@ class MarketPlaceViewModel with ChangeNotifier {
           .where((label) => userLabels.containsKey(label))
           .fold(0, (sum, label) => sum + userLabels[label]!);
 
-      // Compara las prioridades: el item con mayor prioridad debe aparecer primero
       return priorityB.compareTo(priorityA);
     });
-    print(
-        "Items organizados"); // Notifica a los listeners que los items fueron actualizados
+    print("Items organizados"); // Notifica
   }
 
   void obtainPrice() {

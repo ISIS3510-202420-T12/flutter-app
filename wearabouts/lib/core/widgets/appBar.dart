@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:wearabouts/features/home/view/pages/checkoutPage.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({
@@ -18,7 +19,13 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       actions: <Widget>[
         IconButton(
-            onPressed: () {}, icon: const FaIcon(FontAwesomeIcons.shoppingBag)),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CheckoutPage()),
+              );
+            },
+            icon: const FaIcon(FontAwesomeIcons.shoppingBag)),
         IconButton(onPressed: () {}, icon: const Icon(Icons.search))
       ],
       leadingWidth: 120,

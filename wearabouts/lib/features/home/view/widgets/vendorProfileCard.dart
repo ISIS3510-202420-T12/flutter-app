@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:wearabouts/core/repositories/model/clothe.dart';
+import 'package:wearabouts/core/repositories/model/user.dart';
 import 'package:wearabouts/features/home/view/widgets/statisticsRow.dart';
 
-class VendorProfileCard extends StatefulWidget {
+class VendorProfileCard extends StatelessWidget {
   const VendorProfileCard({super.key});
 
-  @override
-  State<VendorProfileCard> createState() => _VendorProfileCardState();
-}
-
-class _VendorProfileCardState extends State<VendorProfileCard> {
   @override
   Widget build(BuildContext context) {
     return Container(

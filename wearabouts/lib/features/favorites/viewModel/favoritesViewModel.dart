@@ -40,8 +40,10 @@ class FavoritesViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteFromFavorites(String clotheId) {
+  void deleteFromFavorites(String clotheId) async {
     items.removeWhere((item) => item.id == clotheId);
+
+    await _clothesRepository.removeFavorite(clotheId);
     notifyListeners();
   }
 

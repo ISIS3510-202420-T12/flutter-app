@@ -124,7 +124,7 @@ class _ClotheDetailPageState extends State<ClotheDetailPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                const VendorProfileCard()
+                VendorProfileCard()
               ],
             ),
           ),
