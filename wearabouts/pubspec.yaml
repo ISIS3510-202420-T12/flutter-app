@@ -3,7 +3,6 @@ description: "A free marketplace for clothes"
 publish_to: 'none'
 version: 0.1.0
 
-
 environment:
   sdk: ^3.5.3
 
@@ -26,10 +25,7 @@ dependencies:
   flutter_local_notifications: ^17.2.4
   json_annotation: ^4.9.0
   build_runner: ^2.3.3
-  
-
-
-
+  mapbox_maps_flutter: ^2.3.0
 
 dev_dependencies:
   flutter_test:
@@ -37,9 +33,6 @@ dev_dependencies:
   flutter_lints: ^4.0.0
   flutter_launcher_icons: ^0.14.1
   json_serializable: ^6.8.0
-  
-  
-
 
 flutter:
   uses-material-design: true

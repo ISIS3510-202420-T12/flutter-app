@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'model/user.dart';
 
 class UsersRepository {
@@ -29,8 +28,7 @@ class UsersRepository {
     }
   }
 
-  Future<void> updateUser(
-      String userId, Map<String, dynamic> updatedData) async {
+  Future<void> updateUser(String userId, Map<String, dynamic> updatedData) async {
     try {
       await _db.collection('Users').doc(userId).update(updatedData);
     } catch (e) {

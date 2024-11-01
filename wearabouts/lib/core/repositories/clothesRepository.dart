@@ -51,7 +51,6 @@ class ClothesRepository {
 
   Future<void> clearFavorites() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // Elimina la lista de favoritos de SharedPreferences
-    await prefs.remove('favorites'); // 'favorites' es la clave donde se guardan
+    await prefs.remove('favorites');
   }
 }

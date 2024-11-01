@@ -26,9 +26,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           padding: const EdgeInsets.all(8.0),
           child: Column(children: [
             const Text("Checkout", style: TextStyle(fontSize: 24)),
-            SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             Consumer<MarketPlaceViewModel>(
               builder: (context, viewModel, child) {
                 double subtotal = viewModel.totalPrice;
@@ -36,57 +34,60 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 double total = subtotal + deliveryFee;
 
                 // Formatear los valores
-                MoneyFormatter formatedSubTotal = MoneyFormatter(
-                    amount: subtotal,
-                    settings: MoneyFormatterSettings(fractionDigits: 0));
-                MoneyFormatter formatedDeliveryFee = MoneyFormatter(
-                    amount: deliveryFee,
-                    settings: MoneyFormatterSettings(fractionDigits: 0));
-                MoneyFormatter formatedTotalPrice = MoneyFormatter(
-                    amount: total,
-                    settings: MoneyFormatterSettings(fractionDigits: 0));
+                MoneyFormatter formattedSubTotal = MoneyFormatter(
+                  amount: subtotal,
+                  settings: MoneyFormatterSettings(fractionDigits: 0),
+                );
+                MoneyFormatter formattedDeliveryFee = MoneyFormatter(
+                  amount: deliveryFee,
+                  settings: MoneyFormatterSettings(fractionDigits: 0),
+                );
+                MoneyFormatter formattedTotalPrice = MoneyFormatter(
+                  amount: total,
+                  settings: MoneyFormatterSettings(fractionDigits: 0),
+                );
 
                 return Column(
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                          color: Pallete.whiteColor,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: Offset(0, 3),
-                            ),
-                          ]),
+                        color: Pallete.whiteColor,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
                       child: Column(
                         children: viewModel.kart.map((clothe) {
-                          return ClothesKartCard(
-                              item: clothe); // Tu widget para cada elemento
+                          return ClothesKartCard(item: clothe);
                         }).toList(),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Subtotal"),
-                        Text(formatedSubTotal.output.symbolOnRight),
+                        const Text("Subtotal"),
+                        Text(formattedSubTotal.output.symbolOnRight),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Delivery fee"),
-                        Text(formatedDeliveryFee.output.symbolOnRight),
+                        const Text("Delivery fee"),
+                        Text(formattedDeliveryFee.output.symbolOnRight),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Total"),
-                        Text(formatedTotalPrice.output.symbolOnRight),
+                        const Text("Total"),
+                        Text(formattedTotalPrice.output.symbolOnRight),
                       ],
                     ),
                     const Divider(),
@@ -95,37 +96,40 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                          color: Pallete.color2,
-                          borderRadius: BorderRadius.circular(10)),
+                        color: Pallete.color2,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       child: ElevatedButton(
-                          onPressed: viewModel.kart.isEmpty
-                              ? null
-                              : () {
-                                  Provider.of<MarketPlaceViewModel>(context,
-                                          listen: false)
-                                      .makePayment(
-                                          context,
-                                          Provider.of<UserViewModel>(context,
-                                              listen: false),
-                                          Provider.of<FirebaseAnalytics>(
-                                              context,
-                                              listen: false));
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
+                        onPressed: viewModel.kart.isEmpty
+                            ? null
+                            : () {
+                                Provider.of<MarketPlaceViewModel>(context,
+                                        listen: false)
+                                    .makePayment(
+                                        context,
+                                        Provider.of<UserViewModel>(context,
+                                            listen: false),
+                                        Provider.of<FirebaseAnalytics>(context,
+                                            listen: false));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
                                     duration: Duration(seconds: 1),
                                     content:
-                                        Text("Your order has been procesed!"),
-                                  ));
-                                },
-                          style: ElevatedButton.styleFrom(
-                              fixedSize: const Size(150, 50),
-                              backgroundColor: Pallete.transparentColor,
-                              shadowColor: Pallete.transparentColor),
-                          child: const Text(
-                            "PAY",
-                            style: TextStyle(fontSize: 24, color: Colors.white),
-                          )),
-                    )
+                                        Text("Your order has been processed!"),
+                                  ),
+                                );
+                              },
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: const Size(150, 50),
+                          backgroundColor: Pallete.transparentColor,
+                          shadowColor: Pallete.transparentColor,
+                        ),
+                        child: const Text(
+                          "PAY",
+                          style: TextStyle(fontSize: 24, color: Colors.white),
+                        ),
+                      ),
+                    ),
                   ],
                 );
               },

@@ -41,8 +41,7 @@ class Clothe {
         throw Exception("Invalid or missing 'Seller' in document ${doc.id}");
       }
       if (data['ImagesURLs'] == null || data['ImagesURLs'] is! List) {
-        throw Exception(
-            "Invalid or missing 'ImagesURLs' in document ${doc.id}");
+        throw Exception("Invalid or missing 'ImagesURLs' in document ${doc.id}");
       }
       if (data['Labels'] == null || data['Labels'] is! List) {
         throw Exception("Invalid or missing 'Labels' in document ${doc.id}");
@@ -95,8 +94,7 @@ class Clothe {
         FirebaseFirestore.instance.doc(json['seller']);
     return Clothe(
       id: json['id'],
-      seller:
-          sellerRef, // Puede ser necesario convertir esto en DocumentReference
+      seller: sellerRef,
       description: json['description'],
       title: json['title'],
       price: json['price'],

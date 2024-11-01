@@ -17,37 +17,38 @@ class _ClothesKartCardState extends State<ClothesKartCard> {
 
   @override
   Widget build(BuildContext context) {
-    MoneyFormatter formatedPrice = MoneyFormatter(
-        amount: item.price.toDouble(),
-        settings: MoneyFormatterSettings(fractionDigits: 0));
+    MoneyFormatter formattedPrice = MoneyFormatter(
+      amount: item.price.toDouble(),
+      settings: MoneyFormatterSettings(fractionDigits: 0),
+    );
 
     return Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  height: 60,
-                  width: 80,
-                  child: Image.network(
-                    item.imagesURLs[0],
-                    fit: BoxFit.fitHeight,
-                  ),
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                height: 60,
+                width: 80,
+                child: Image.network(
+                  item.imagesURLs[0],
+                  fit: BoxFit.fitHeight,
                 ),
               ),
-              Text(item.title),
-            ],
-          ),
-          Row(
-            children: [
-              Text(formatedPrice.output.compactSymbolOnRight),
-              const SizedBox(width: 20)
-            ],
-          ),
-        ]);
+            ),
+            Text(item.title),
+          ],
+        ),
+        Row(
+          children: [
+            Text(formattedPrice.output.compactSymbolOnRight),
+            const SizedBox(width: 20),
+          ],
+        ),
+      ],
+    );
   }
 }

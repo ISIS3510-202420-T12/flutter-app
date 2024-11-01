@@ -25,109 +25,117 @@ class _ClotheDetailPageState extends State<ClotheDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    MoneyFormatter formatedPrice = MoneyFormatter(
-        amount: item.price.toDouble(),
-        settings: MoneyFormatterSettings(fractionDigits: 0));
+    MoneyFormatter formattedPrice = MoneyFormatter(
+      amount: item.price.toDouble(),
+      settings: MoneyFormatterSettings(fractionDigits: 0),
+    );
 
     return Scaffold(
-        appBar: const ContextAppBar(),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Container(
-                      height: 400,
-                      width: double.infinity,
-                      color: Colors.grey,
-                      child: Image.network(
-                        item.imagesURLs[0],
-                        fit: BoxFit.fitHeight,
-                      )),
+      appBar: const ContextAppBar(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  height: 400,
+                  width: double.infinity,
+                  color: Colors.grey,
+                  child: Image.network(
+                    item.imagesURLs[0],
+                    fit: BoxFit.fitHeight,
+                  ),
                 ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Column(
-                      children: [
-                        Text(item.title, style: const TextStyle(fontSize: 24)),
-                        const Text(
-                          "S size | No use",
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.w100),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(item.title, style: const TextStyle(fontSize: 24)),
+                      const Text(
+                        "S size | No use",
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w100,
                         ),
-                        AddToFavoritesButton(clothe: item)
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        BuyButton(
-                          onTap: () {
-                            Provider.of<MarketPlaceViewModel>(context,
-                                    listen: false)
-                                .addToKart(item);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const CheckoutPage()),
-                            );
-                          },
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        AddToKartButton(onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            duration: const Duration(seconds: 1),
-                            content: Text(Provider.of<MarketPlaceViewModel>(
-                                    context,
-                                    listen: false)
-                                .addToKart(item)),
+                      ),
+                      AddToFavoritesButton(clothe: item),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      BuyButton(
+                        onTap: () {
+                          Provider.of<MarketPlaceViewModel>(context,
+                                  listen: false)
+                              .addToKart(item);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CheckoutPage(),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      AddToKartButton(
+                        onTap: () {
+                          Provider.of<MarketPlaceViewModel>(context,
+                                  listen: false)
+                              .addToKart(item);
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            duration: Duration(seconds: 1),
+                            content: Text("Añadido al carrito"),
                           ));
-                        })
-                      ],
-                    )
-                  ],
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Text(
+                formattedPrice.output.symbolOnRight,
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                 ),
-                Text(formatedPrice.output.symbolOnRight,
-                    style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold)),
-                const Divider(),
-                const Row(
-                  children: [
-                    Icon(
-                      Icons.support_agent,
-                      size: 40,
-                    ),
-                    SizedBox(
-                      width: 30,
-                      height: 50,
-                    ),
-                    Text(
-                      "Ask a question to the vendor",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                    )
-                  ],
+              ),
+              const Divider(),
+              const Row(
+                children: [
+                  Icon(Icons.support_agent, size: 40),
+                  SizedBox(width: 30, height: 50),
+                  Text(
+                    "Ask a question to the vendor",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+              const Divider(),
+              const Text(
+                "Description",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              ),
+              Text(
+                item.description,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
                 ),
-                const Divider(),
-                const Text("Description",
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-                Text(item.description,
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w400)),
-                const SizedBox(
-                  height: 20,
-                ),
-                const VendorProfileCard()
-              ],
-            ),
+              ),
+              const SizedBox(height: 20),
+              const VendorProfileCard(),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

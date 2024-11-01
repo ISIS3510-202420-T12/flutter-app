@@ -16,8 +16,6 @@ class FavoritesViewModel with ChangeNotifier {
 
   // Método para añadir un favorito a través del repositorio
   Future<void> addFavorite(Clothe clothe) async {
-    // Obtén la lista actual de favoritos
-
     // Verifica si el clothe ya está en la lista de favoritos
     bool isAlreadyFavorite = items.any((favorite) => favorite.id == clothe.id);
 
@@ -29,22 +27,21 @@ class FavoritesViewModel with ChangeNotifier {
     }
   }
 
-  Future<void> clearFavorites() async {
-    // Limpia la lista de favoritos en memoria
-    items.clear();
-
-    // Limpia los favoritos en SharedPreferences
-    await _clothesRepository.clearFavorites();
-
-    // Notifica a los listeners sobre el cambio
-    notifyListeners();
-  }
-
+  // Método para eliminar un favorito por ID
   void deleteFromFavorites(String clotheId) {
     items.removeWhere((item) => item.id == clotheId);
+    _clothesRepository.clearFavorites();
     notifyListeners();
   }
 
+  // Método para limpiar todos los favoritos
+  Future<void> clearFavorites() async {
+    items.clear();
+    await _clothesRepository.clearFavorites();
+    notifyListeners();
+  }
+
+  // Verificar si un artículo es favorito
   bool isFavorite(String clotheId) {
     return items.any((item) => item.id == clotheId);
   }

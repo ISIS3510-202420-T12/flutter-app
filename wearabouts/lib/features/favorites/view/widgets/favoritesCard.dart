@@ -19,9 +19,10 @@ class _FavoritesCardState extends State<FavoritesCard> {
 
   @override
   Widget build(BuildContext context) {
-    MoneyFormatter formatedPrice = MoneyFormatter(
-        amount: item.price.toDouble(),
-        settings: MoneyFormatterSettings(fractionDigits: 0));
+    MoneyFormatter formattedPrice = MoneyFormatter(
+      amount: item.price.toDouble(),
+      settings: MoneyFormatterSettings(fractionDigits: 0),
+    );
     return Card(
       child: Container(
         height: 150,
@@ -43,28 +44,31 @@ class _FavoritesCardState extends State<FavoritesCard> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(item.title,
-                        style: const TextStyle(fontWeight: FontWeight.w600)),
-                    Text(formatedPrice.output.compactSymbolOnRight),
+                    Text(
+                      item.title,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    Text(formattedPrice.output.compactSymbolOnRight),
                     Text(
                       item.description,
                       softWrap: true,
                       overflow: TextOverflow.clip,
-                    )
+                    ),
                   ],
                 ),
               ),
-              Column(children: [
-                IconButton(
-                  icon: Icon(Icons.delete), // Ícono de eliminar
-                  color: Colors.black, // Color del ícono
-                  onPressed: () {
-                    Provider.of<FavoritesViewModel>(context, listen: false)
-                        .deleteFromFavorites(
-                            item.id); // Llama a la función de eliminación
-                  },
-                ),
-              ])
+              Column(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    color: Colors.black,
+                    onPressed: () {
+                      Provider.of<FavoritesViewModel>(context, listen: false)
+                          .deleteFromFavorites(item.id);
+                    },
+                  ),
+                ],
+              ),
             ],
           ),
         ),

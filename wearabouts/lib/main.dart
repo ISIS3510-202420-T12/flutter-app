@@ -39,23 +39,22 @@ void main() async {
   tz.initializeTimeZones();
   await Firebase.initializeApp();
   FirebaseFirestore.instance;
+
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   analytics.setAnalyticsCollectionEnabled(true);
   FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
+
   ClothesRepository clothesRepository = ClothesRepository();
   UsersRepository usersRepository = UsersRepository();
   CampaignsRepository campaignsRepository = CampaignsRepository();
-  DonationPlacesRepository donationPlacesRepository =
-      DonationPlacesRepository();
+  DonationPlacesRepository donationPlacesRepository = DonationPlacesRepository();
   DonationsRepository donationsRepository = DonationsRepository();
   ActivitiesRepository activitiesRepository = ActivitiesRepository();
 
-  //bool alreadyDonated = prefs.getBool('Donated') ?? false;
-  bool alreadyDonated = true;
+  bool alreadyDonated = prefs.getBool('Donated') ?? true;
   if (alreadyDonated) {
-    //bool alreadyComeBack = prefs.getBool('DonatedComeback') ?? false;
-    bool alreadyComeBack = false;
+    bool alreadyComeBack = prefs.getBool('DonatedComeback') ?? false;
     if (!alreadyComeBack) {
       await analytics.logEvent(
           name: "already_donated_entered",
@@ -63,7 +62,7 @@ void main() async {
       prefs.setBool('DonatedComeback', true);
     }
   }
-  //await populateFirestore();
+
   runApp(MultiProvider(providers: [
     Provider<FirebaseAnalytics>.value(value: analytics),
     Provider<FirebaseAnalyticsObserver>.value(value: observer),
@@ -75,8 +74,7 @@ void main() async {
       },
     ),
     ChangeNotifierProvider(
-        create: (_) =>
-            MarketPlaceViewModel(clothesRepository, usersRepository)),
+        create: (_) => MarketPlaceViewModel(clothesRepository, usersRepository)),
     ChangeNotifierProvider(
         create: (_) => FavoritesViewModel(clothesRepository)),
     ChangeNotifierProvider(
