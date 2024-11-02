@@ -11,22 +11,19 @@ class UserViewModel with ChangeNotifier {
 
   User? get user => _user;
 
-  // Establece el usuario actual en el viewModel y notifica cambios
   void setUser(User user) {
     _user = user;
     notifyListeners();
   }
 
-  // Registra un nuevo usuario en Firestore usando UsersRepository
   Future<void> registerUser({
     required String username,
     required String email,
     required String password,
   }) async {
     try {
-      // Crear una instancia de User con los datos proporcionados
       User newUser = User(
-        id: '', // Firestore generará un ID único
+        id: '',
         username: username,
         password: password,
         email: email,
@@ -44,12 +41,11 @@ class UserViewModel with ChangeNotifier {
           't-shirts': 0,
           'tops': 0,
         },
-        lattitude: 4.665,
+        latitude: 4.665,
         longitude: -74.0535,
         city: 'Bogota',
       );
 
-      // Llama al método createUser del repositorio para guardar el usuario en Firestore
       await usersRepository.createUser(newUser);
       errorMessage = '';
     } catch (e) {
@@ -58,7 +54,6 @@ class UserViewModel with ChangeNotifier {
     }
   }
 
-  // Obtiene un usuario de Firestore por su ID y lo configura en el viewModel
   Future<void> fetchUser(String userId) async {
     try {
       User? fetchedUser = await usersRepository.getUserById(userId);
@@ -75,7 +70,6 @@ class UserViewModel with ChangeNotifier {
     }
   }
 
-  // Actualiza las etiquetas del usuario en Firestore
   Future<void> updateUserLabels(String userId, Map<String, int> labels) async {
     try {
       await usersRepository.updateUserLabels(userId, labels);
@@ -89,7 +83,6 @@ class UserViewModel with ChangeNotifier {
     }
   }
 
-  // Restablece el usuario en el viewModel y notifica cambios
   void logout() {
     _user = null;
     notifyListeners();
