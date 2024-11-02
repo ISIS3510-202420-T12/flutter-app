@@ -1,9 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'model/user.dart';
 
 class UsersRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  Future<void> createUser(User user) async {
+    try {
+      final docRef = _db.collection('Users').doc();
+      user.id = docRef.id;
+      await docRef.set(user.toJson());
+    } catch (e) {
+      throw Exception("Error creating user: $e");
+    }
+  }
 
   Future<List<User>> fetchUsers() async {
     try {

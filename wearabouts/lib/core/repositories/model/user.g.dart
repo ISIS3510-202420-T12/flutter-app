@@ -16,7 +16,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       profilePic: json['profilePic'] as String,
       rating: (json['rating'] as num).toInt(),
       labels: Map<String, int>.from(json['labels'] as Map),
-      lattitude: (json['lattitude'] as num).toDouble(),
+      latitude: (json['lattitude'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
       city: json['city'] as String,
     );
@@ -31,7 +31,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'profilePic': instance.profilePic,
       'rating': instance.rating,
       'labels': instance.labels,
-      'lattitude': instance.lattitude,
+      'lattitude': instance.latitude,
       'longitude': instance.longitude,
       'city': instance.city,
     };
