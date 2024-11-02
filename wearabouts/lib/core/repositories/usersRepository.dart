@@ -5,6 +5,16 @@ import 'model/user.dart';
 class UsersRepository {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
+  // Método para crear un nuevo usuario en Firestore
+  Future<void> createUser(User user) async {
+    try {
+      await _db.collection('Users').doc(user.username).set(user.toJson());
+    } catch (e) {
+      throw Exception("Error creating user: $e");
+    }
+  }
+
+  // Método para obtener todos los usuarios
   Future<List<User>> fetchUsers() async {
     try {
       QuerySnapshot querySnapshot = await _db.collection('Users').get();
@@ -16,6 +26,7 @@ class UsersRepository {
     }
   }
 
+  // Método para obtener un usuario por su ID
   Future<User> getUserById(String userId) async {
     try {
       DocumentSnapshot doc = await _db.collection('Users').doc(userId).get();
@@ -38,6 +49,7 @@ class UsersRepository {
     }
   }
 
+  // Método para actualizar las etiquetas de un usuario específico
   Future<void> updateUserLabels(String userId, Map<String, int> labels) async {
     try {
       await _db.collection('Users').doc(userId).update({
