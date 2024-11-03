@@ -82,4 +82,23 @@ class User {
       'HasDonated': hasDonated,
     };
   }
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'] ?? '',
+      username: json['Username'] ?? '',
+      password: json['Password'] ?? '',
+      email: json['Email'] ?? '',
+      sales: json['Sales'] ?? 0,
+      purchases: json['Purchases'] ?? 0,
+      profilePic: json['ProfilePic'] ?? '',
+      rating: json['Rating'] ?? 5,
+      labels:
+          (json['Labels'] != null) ? Map<String, int>.from(json['Labels']) : {},
+      latitude: json['Latitude'] ?? 0.0,
+      longitude: json['Longitude'] ?? 0.0,
+      city: json['City'] ?? '',
+      hasDonated: json['HasDonated'] ?? false,
+    );
+  }
 }

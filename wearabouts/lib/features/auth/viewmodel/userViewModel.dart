@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wearabouts/core/repositories/model/user.dart';
 import 'package:wearabouts/core/repositories/usersRepository.dart';
 
@@ -59,6 +62,10 @@ class UserViewModel with ChangeNotifier {
       User? fetchedUser = await usersRepository.getUserById(userId);
       if (fetchedUser != null) {
         _user = fetchedUser;
+
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString('cached_user', jsonEncode(fetchedUser.toJson()));
+
         notifyListeners();
       } else {
         errorMessage = "User not found";
@@ -66,6 +73,16 @@ class UserViewModel with ChangeNotifier {
       }
     } catch (e) {
       errorMessage = 'Error fetching user: $e';
+
+      final prefs = await SharedPreferences.getInstance();
+      String? cachedUserJson = prefs.getString('cached_user');
+
+      if (cachedUserJson != null) {
+        _user = User.fromJson(jsonDecode(cachedUserJson));
+      } else {
+        errorMessage = 'No cached user data available';
+      }
+
       notifyListeners();
     }
   }

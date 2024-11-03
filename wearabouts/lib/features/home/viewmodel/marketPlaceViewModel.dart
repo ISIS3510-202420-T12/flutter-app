@@ -3,6 +3,7 @@ import 'package:wearabouts/core/repositories/clothesRepository.dart';
 import 'package:wearabouts/core/repositories/model/clothe.dart';
 import 'package:wearabouts/core/repositories/usersRepository.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:wearabouts/services/localNotifications/notificacionService.dart';
 import '../../../core/repositories/model/user.dart';
 import '../../auth/viewmodel/userViewModel.dart';
 
@@ -88,6 +89,9 @@ class MarketPlaceViewModel with ChangeNotifier {
             "Total": totalPrice,
           },
         );
+
+        NotificationService.saveNotification(
+            "You have purchased ${items.length} items for $totalPrice \$");
 
         for (var item in kart) {
           for (String label in item.labels) {

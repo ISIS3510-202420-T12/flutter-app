@@ -122,7 +122,8 @@ class DonationViewModel with ChangeNotifier {
 
     NotificationService.showInstantNotification(
         "You have donated $amount pesos", "Thank you");
-
+    NotificationService.saveNotification(
+        "You have donated $amount pesos to " + campaign.name);
     if (!alreadyDonated) {
       NotificationService.scheduleNotification(
           "It's been a while",

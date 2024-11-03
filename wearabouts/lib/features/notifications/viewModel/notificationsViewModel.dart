@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:wearabouts/core/repositories/activitiesRepository.dart';
-import 'package:wearabouts/core/repositories/model/Activity.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Notificationsviewmodel with ChangeNotifier {
-  ActivitiesRepository _activitiesRepository;
+class NotificationsViewModel with ChangeNotifier {
+  List<String> notifications = [];
 
-  Notificationsviewmodel(this._activitiesRepository);
-
-  List<Activity> activities = [];
-
-  Future<void> populate(String userId) async {
-    try {
-      List<Activity> fetchedItems =
-          await _activitiesRepository.fetchActivitiesByUser(userId);
-      setNotifications(fetchedItems);
-      print("Notifications loaded");
-    } catch (e) {
-      print('Error fetching notifications: $e');
-    }
+  // Cargar notificaciones desde almacenamiento local
+  Future<void> loadNotifications() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    notifications = prefs.getStringList('notifications') ?? [];
+    notifyListeners();
   }
 
-  void setNotifications(List<Activity> fetchedItems) {
-    try {
-      activities = fetchedItems;
-      notifyListeners();
-    } catch (e) {
-      print('Error setting notifications: $e');
-    }
+  // Guardar una nueva notificación
+  Future<void> addNotification(String notification) async {
+    notifications.add(notification);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('notifications', notifications);
+    notifyListeners();
+  }
+
+  // Eliminar una notificación específica
+  Future<void> removeNotification(String notification) async {
+    notifications.remove(notification);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('notifications', notifications);
+    notifyListeners();
+  }
+
+  // Limpiar todas las notificaciones
+  Future<void> clearNotifications() async {
+    notifications.clear();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('notifications');
+    notifyListeners();
   }
 }
