@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wearabouts/core/theme/app_pallete.dart';
-import 'package:wearabouts/features/favorites/viewModel/favoritesViewModel.dart';
 import 'package:wearabouts/features/notifications/viewModel/notificationsViewModel.dart';
 
 class NotificationCard extends StatelessWidget {
