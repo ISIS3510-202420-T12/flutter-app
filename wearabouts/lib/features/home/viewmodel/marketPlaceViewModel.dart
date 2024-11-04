@@ -100,6 +100,7 @@ class MarketPlaceViewModel with ChangeNotifier {
               parameters: {
                 "label": label,
                 "city": currentUser.city,
+                "value": item.price
               },
             );
           }
