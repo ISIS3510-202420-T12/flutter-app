@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:wearabouts/core/theme/app_pallete.dart';
 import 'package:wearabouts/core/widgets/appBar.dart';
 import 'package:wearabouts/features/donation/view/pages/donationPage.dart';
 import 'package:wearabouts/features/favorites/view/pages/favoritesPage.dart';
 import 'package:wearabouts/features/profile/view/pages/profilePage.dart';
 import 'package:wearabouts/features/sell/view/pages/sellPage.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 import '../../features/home/view/pages/homePage.dart';
 
@@ -25,6 +27,13 @@ class _HomeFrameState extends State<HomeFrame> {
     const ProfilePage()
   ];
   int mycurrentIndex = 0;
+  final screenNames = ['Home', 'Sell', 'Donate', 'Favorites', 'Profile'];
+  Future<void> _logScreenView(String screenName) async {
+    await Provider.of<FirebaseAnalytics>(context, listen: false).logEvent(
+      name: 'screen_view',
+      parameters: {'screen_name': screenName},
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +97,8 @@ class _HomeFrameState extends State<HomeFrame> {
                 onTap: (index) => {
                       setState(() {
                         mycurrentIndex = index;
-                      })
+                      }),
+                      _logScreenView(screenNames[index])
                     },
                 items: const [
                   BottomNavigationBarItem(
