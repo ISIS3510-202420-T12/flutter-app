@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -84,8 +85,27 @@ class _DonationMapPageState extends State<DonationMapPage> {
                             position: LatLng(place.lattitude, place.longitude),
                             onTap: () {
                               selectedMarkerIndex = index;
-                              carouselController.animateToPage(index,
-                                  duration: Duration(milliseconds: 40));
+
+                              Provider.of<FirebaseAnalytics>(context,
+                                      listen: false)
+                                  .logEvent(
+                                      name: 'select_donation_place',
+                                      parameters: {
+                                    'place_name': place.name,
+                                  });
+
+                              try {
+                                // Intenta mover el carrusel a la página especificada
+                                carouselController.animateToPage(
+                                  index,
+                                  duration: Duration(milliseconds: 40),
+                                );
+                              } catch (e) {
+                                // En caso de que ocurra una excepción, muestra un mensaje de error o realiza un log
+                                print("Error moving the carrousel: $e");
+
+                                ;
+                              }
                             },
                           );
                         }).toList();
@@ -187,8 +207,27 @@ class _DonationMapPageState extends State<DonationMapPage> {
                             }
                           },
                         ),
-                        carouselController: carouselController,
-                      );
+                      ),
+                    );
+                  }).toList(),
+                  options: CarouselOptions(
+                    height: 290,
+                    initialPage: selectedMarkerIndex,
+                    onPageChanged: (index, reason) {
+                      selectedMarkerIndex = index;
+                      if (_mapController != null) {
+                        _mapController!.animateCamera(
+                          CameraUpdate.newLatLng(
+                            LatLng(viewModel.donationPlaces[index].lattitude,
+                                viewModel.donationPlaces[index].longitude),
+                          ),
+                        );
+                      }
+
+                      Provider.of<FirebaseAnalytics>(context, listen: false)
+                          .logEvent(name: 'select_donation_place', parameters: {
+                        'place_name': viewModel.donationPlaces[index].name,
+                      });
                     },
                   ),
                 ],

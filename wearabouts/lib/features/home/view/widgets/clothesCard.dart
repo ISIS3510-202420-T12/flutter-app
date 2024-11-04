@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:money_formatter/money_formatter.dart';
-import 'package:wearabouts/core/theme/app_pallete.dart';
 import 'package:wearabouts/core/repositories/model/clothe.dart';
 import 'package:wearabouts/features/home/view/pages/clotheDetailPage.dart';
 
@@ -48,32 +48,15 @@ class _ClothesCardState extends State<ClothesCard> {
                     child: SizedBox(
                       height: 120,
                       width: 180,
-                      child: Image.network(
-                        item.imagesURLs[0],
-                        loadingBuilder: (BuildContext context, Widget child,
-                            ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child; // La imagen se ha cargado completamente
-                          } else {
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        (loadingProgress.expectedTotalBytes ??
-                                            1)
-                                    : null,
-                              ),
-                            ); // Muestra un spinner mientras la imagen se carga
-                          }
-                        },
-                        errorBuilder: (BuildContext context, Object exception,
-                            StackTrace? stackTrace) {
-                          return Image.asset(
-                            'assets/images/placeholder.png',
-                            fit: BoxFit.fitHeight,
-                          ); // Muestra una imagen local predeterminada si la carga falla
-                        },
+                      child: CachedNetworkImage(
+                        imageUrl: item.imagesURLs[0],
+                        placeholder: (context, url) => Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (context, url, error) => Image.asset(
+                          'assets/images/placeholder.png',
+                          fit: BoxFit.fitHeight,
+                        ),
                         fit: BoxFit.fitHeight,
                       ),
                     ),

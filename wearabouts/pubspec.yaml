@@ -27,7 +27,7 @@ dependencies:
   json_annotation: ^4.9.0
   build_runner: ^2.3.3
   connectivity_plus: ^4.0.1
-  
+  cached_network_image: ^3.2.1
 
 
 

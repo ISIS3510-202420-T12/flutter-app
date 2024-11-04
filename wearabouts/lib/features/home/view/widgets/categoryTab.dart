@@ -1,5 +1,7 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class CategoryTab extends StatefulWidget {
   final String name;
@@ -19,6 +21,13 @@ class _CategoryTabState extends State<CategoryTab> {
     setState(() {
       _isPressed = !_isPressed;
     });
+
+    Provider.of<FirebaseAnalytics>(context, listen: false).logEvent(
+      name: 'select_category_filter',
+      parameters: {
+        'category_name': widget.name,
+      },
+    );
   }
 
   @override
