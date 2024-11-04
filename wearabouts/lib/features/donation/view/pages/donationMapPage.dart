@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -88,6 +89,14 @@ class _DonationMapPageState extends State<DonationMapPage> {
                             ),
                             onTap: () {
                               selectedMarkerIndex = index;
+
+                              Provider.of<FirebaseAnalytics>(context,
+                                      listen: false)
+                                  .logEvent(
+                                      name: 'select_donation_place',
+                                      parameters: {
+                                    'place_name': place.name,
+                                  });
 
                               try {
                                 // Intenta mover el carrusel a la página especificada
@@ -209,6 +218,11 @@ class _DonationMapPageState extends State<DonationMapPage> {
                           ),
                         );
                       }
+
+                      Provider.of<FirebaseAnalytics>(context, listen: false)
+                          .logEvent(name: 'select_donation_place', parameters: {
+                        'place_name': viewModel.donationPlaces[index].name,
+                      });
                     },
                   ),
                   carouselController: carouselController,
