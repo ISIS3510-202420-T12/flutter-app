@@ -1,14 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CategoryTab extends StatelessWidget {
+class CategoryTab extends StatefulWidget {
   final String name;
   final String assetName;
-  const CategoryTab({super.key, required this.name, required this.assetName});
+
+  const CategoryTab({Key? key, required this.name, required this.assetName})
+      : super(key: key);
+
+  @override
+  _CategoryTabState createState() => _CategoryTabState();
+}
+
+class _CategoryTabState extends State<CategoryTab> {
+  bool _isPressed = false;
+
+  void _togglePressed() {
+    setState(() {
+      _isPressed = !_isPressed;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return GestureDetector(
+      onTap: _togglePressed,
+      child: Card(
+        color: _isPressed
+            ? Colors.grey.shade300
+            : Colors.white, // Color oscuro cuando está presionado
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         child: SizedBox(
           width: 90,
@@ -19,17 +39,19 @@ class CategoryTab extends StatelessWidget {
                 child: SizedBox(
                   width: 60,
                   child: SvgPicture.asset(
-                    assetName,
+                    widget.assetName,
                     height: 55,
                     width: 20,
                   ),
                 ),
               ),
-              Text(name,
+              Text(widget.name,
                   style: const TextStyle(
                       fontSize: 14, fontWeight: FontWeight.w300))
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

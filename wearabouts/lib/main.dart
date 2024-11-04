@@ -17,6 +17,7 @@ import 'package:wearabouts/features/donation/viewModel/donationViewModel.dart';
 import 'package:wearabouts/features/favorites/viewModel/favoritesViewModel.dart';
 import 'package:wearabouts/features/home/viewmodel/marketPlaceViewModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:wearabouts/features/notifications/viewModel/notificationsViewModel.dart';
 import 'package:wearabouts/services/localNotifications/notificacionService.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'features/auth/viewmodel/userViewModel.dart';
@@ -82,6 +83,7 @@ void main() async {
     ChangeNotifierProvider(
         create: (_) => DonationViewModel(donationPlacesRepository,
             campaignsRepository, donationsRepository, usersRepository)),
+    ChangeNotifierProvider(create: (_) => NotificationsViewModel()),
   ], child: const MainApp()));
 }
 

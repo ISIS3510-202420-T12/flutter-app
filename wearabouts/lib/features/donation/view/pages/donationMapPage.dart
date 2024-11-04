@@ -19,6 +19,8 @@ class DonationMapPage extends StatefulWidget {
 }
 
 class _DonationMapPageState extends State<DonationMapPage> {
+  GoogleMapController? _mapController;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -112,6 +114,9 @@ class _DonationMapPageState extends State<DonationMapPage> {
                       .cast<Marker>()
                       .toList();
                   return GoogleMap(
+                    onMapCreated: (GoogleMapController controller) {
+                      _mapController = controller;
+                    },
                     initialCameraPosition: CameraPosition(
                       target: LatLng(
                         viewModel.locationData!.latitude!,
@@ -183,17 +188,27 @@ class _DonationMapPageState extends State<DonationMapPage> {
                                   color: Pallete.whiteColor,
                                   fontWeight: FontWeight.w800,
                                   fontSize: 16),
-                            )
+                            ),
+                            Text(place.description,
+                                style: TextStyle(fontSize: 9))
                           ],
                         ),
                       ),
                     );
                   }).toList(),
                   options: CarouselOptions(
-                    height: 280,
+                    height: 290,
                     initialPage: selectedMarkerIndex,
                     onPageChanged: (index, reason) {
                       selectedMarkerIndex = index;
+                      if (_mapController != null) {
+                        _mapController!.animateCamera(
+                          CameraUpdate.newLatLng(
+                            LatLng(viewModel.donationPlaces[index].lattitude,
+                                viewModel.donationPlaces[index].longitude),
+                          ),
+                        );
+                      }
                     },
                   ),
                   carouselController: carouselController,

@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
@@ -40,5 +41,13 @@ class NotificationService {
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.dateAndTime);
+  }
+
+  static Future<void> saveNotification(String title) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> notifications =
+        prefs.getStringList('notifications') ?? <String>[];
+    notifications.add(title);
+    await prefs.setStringList('notifications', notifications);
   }
 }
