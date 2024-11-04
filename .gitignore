@@ -139,3 +139,5 @@ wearabouts/windows/flutter/generated_plugins.cmake
 .vscode/settings.json
 /wearabouts/windows
 /wearabouts/windows
+/wearabouts/macos
+/wearabouts/macos
