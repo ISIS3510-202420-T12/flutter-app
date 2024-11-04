@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "plyconfig.json": "jsonc"
-    }
+    },
+    "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }
