@@ -9,6 +9,7 @@ import 'package:wearabouts/core/repositories/model/donationPlace.dart';
 import 'package:wearabouts/core/repositories/usersRepository.dart';
 import 'package:wearabouts/features/auth/viewmodel/userViewModel.dart';
 import 'package:wearabouts/services/localNotifications/notificacionService.dart';
+import 'package:wearabouts/services/networkChecker/networkService.dart';
 
 import '../../../core/repositories/donationPlacesRepository.dart';
 import '../../../core/repositories/model/user.dart';
@@ -18,6 +19,8 @@ class DonationViewModel with ChangeNotifier {
   final CampaignsRepository _campaignsRepository;
   final DonationsRepository _donationsRepository;
   final UsersRepository _usersRepository;
+
+  final NetworkService _networkService = NetworkService();
 
   DonationViewModel(this._donationPlacesRepository, this._campaignsRepository,
       this._donationsRepository, this._usersRepository);
@@ -44,19 +47,15 @@ class DonationViewModel with ChangeNotifier {
     try {
       List<DonationPlace> fetchedItems =
           await _donationPlacesRepository.fetchDonationPlaces();
-
       List<Campaign> campaignList = await _campaignsRepository.fetchCampaigns();
-
-      // Primero, obtén la ubicación actual
       await fetchLocation();
 
-      // Ahora, si la ubicación actual es válida, ordena los lugares de donación
       if (currentLocation != null) {
         fetchedItems.sort((a, b) {
           double distanceA = _calculateDistance(
             currentLocation!.latitude!,
             currentLocation!.longitude!,
-            a.lattitude, // Asegúrate de que DonationPlace tenga estas propiedades
+            a.lattitude,
             a.longitude,
           );
           double distanceB = _calculateDistance(
@@ -65,13 +64,13 @@ class DonationViewModel with ChangeNotifier {
             b.lattitude,
             b.longitude,
           );
-          return distanceA.compareTo(distanceB); // Ordenar por distancia
+          return distanceA.compareTo(distanceB);
         });
       }
 
       setCampaigns(campaignList);
       setDonationPlaces(fetchedItems);
-      print("donation places loaded");
+      print("Donation places loaded");
     } catch (e) {
       print('Error fetching items: $e');
     }
@@ -79,14 +78,10 @@ class DonationViewModel with ChangeNotifier {
 
   double _calculateDistance(
       double lat1, double lon1, double lat2, double lon2) {
-    const double kmPerDegree = 111.0; // Aproximadamente 111 km por grado
-
+    const double kmPerDegree = 111.0;
     double deltaLat = lat2 - lat1;
     double deltaLon = lon2 - lon1;
-
-    // Calcular la distancia aproximada
-    double distance = (deltaLat.abs() + deltaLon.abs()) * kmPerDegree;
-    return distance; // Distancia en km
+    return (deltaLat.abs() + deltaLon.abs()) * kmPerDegree;
   }
 
   Future<void> fetchLocation() async {
@@ -98,11 +93,11 @@ class DonationViewModel with ChangeNotifier {
       couldGetLocation = false;
     }
 
-    PermissionStatus permisionGranted =
+    PermissionStatus permissionGranted =
         await locationController.hasPermission();
-    if (permisionGranted == PermissionStatus.denied) {
-      permisionGranted = await locationController.requestPermission();
-      if (permisionGranted != PermissionStatus.granted) {
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await locationController.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
         couldGetLocation = false;
       }
     }
@@ -113,10 +108,14 @@ class DonationViewModel with ChangeNotifier {
 
   Future<void> addDonation(String amount, UserViewModel userViewModel,
       FirebaseAnalytics analytics, Campaign campaign) async {
+    if (!await _networkService.hasInternetConnection()) {
+      print("No internet connection. Unable to donate.");
+      return;
+    }
+
     double money = double.parse(amount);
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    //bool alreadyDonated = prefs.getBool('Donated') ?? false;
     bool alreadyDonated = false;
     User? currentUser = userViewModel.user;
 
