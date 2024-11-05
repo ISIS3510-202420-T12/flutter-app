@@ -1,0 +1,34 @@
+[
+    {
+        "Username": "Jhon ventas",
+        "Password": "password456",
+        "Email": "jdoe@example.com",
+        "Sales": 2,
+        "Purchases": 7,
+        "ProfilePic": "https://i.pinimg.com/474x/cb/5d/64/cb5d64be736ab84602ee1bcd20303d4e.jpg",
+        "Rating": 5,
+        "Labels": [
+            "jackets",
+            "shoes"
+        ],
+        "City": "Cali",
+        "Lattitude": "14.7268634",
+        "Longitude": "100.7830826"
+    },
+    {
+        "Username": "Victoria paganini",
+        "Password": "password456",
+        "Email": "vpanini@example.com",
+        "Sales": 2,
+        "Purchases": 7,
+        "ProfilePic": "https://www.okchicas.com/wp-content/uploads/2018/01/Poses-para-una-buena-foto-de-perfil-15-1-701x700.jpg",
+        "Rating": 5,
+        "Labels": [
+            "jackets",
+            "shoes"
+        ],
+        "City": "Bogota",
+        "Lattitude": "14.7268634",
+        "Longitude": "100.7830826"
+    }
+]

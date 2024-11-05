@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:money_formatter/money_formatter.dart';
-import 'package:wearabouts/core/theme/app_pallete.dart';
 import 'package:wearabouts/core/repositories/model/clothe.dart';
 import 'package:wearabouts/features/home/view/pages/clotheDetailPage.dart';
 
@@ -44,9 +44,22 @@ class _ClothesCardState extends State<ClothesCard> {
               child: Column(
                 children: [
                   Container(
-                    color: Pallete.color2,
-                    child: Image.network(item.imagesURLs[0],
-                        height: 120, width: 180, fit: BoxFit.fitHeight),
+                    color: Colors.grey,
+                    child: SizedBox(
+                      height: 120,
+                      width: 180,
+                      child: CachedNetworkImage(
+                        imageUrl: item.imagesURLs[0],
+                        placeholder: (context, url) => Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (context, url, error) => Image.asset(
+                          'assets/images/placeholder.png',
+                          fit: BoxFit.fitHeight,
+                        ),
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Text(

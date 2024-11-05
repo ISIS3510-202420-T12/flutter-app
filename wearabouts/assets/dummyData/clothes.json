@@ -1,0 +1,76 @@
+[
+    {
+        "Title": "Camiseta deportiva",
+        "Description": "Comfortable black T-shirt made from 100% cotton.",
+        "Price": 15,
+        "Rating": 4,
+        "Size": "M",
+        "Seller": "Victoria paganini",
+        "ImagesURLs": [
+            "https://http2.mlstatic.com/camisetas-deportivas-para-hombre-adidas-nike-under-armour-D_NQ_NP_735838-MCO29244501225_012019-F.jpg"
+        ],
+        "Labels": [
+            "tops",
+            "sports"
+        ]
+    },
+    {
+        "Title": "Chaqueta de cuero",
+        "Description": "Chaqueta de cuero genuino, poco uso. Perfecta para el invierno o para salidas nocturnas.",
+        "Price": 15,
+        "Rating": 4,
+        "Size": "M",
+        "Seller": "Victoria paganini",
+        "ImagesURLs": [
+            "https://images-na.ssl-images-amazon.com/images/I/81IJuVmysaL._AC_UL1500_.jpg"
+        ],
+        "Labels": [
+            "tops",
+            "jackets"
+        ]
+    },
+    {
+        "Title": "Camisa a rayas",
+        "Description": "Comfortable black T-shirt made from 100% cotton.",
+        "Price": 15,
+        "Rating": 4,
+        "Size": "M",
+        "Seller": "Victoria paganini",
+        "ImagesURLs": [
+            "https://m.media-amazon.com/images/I/71wF0tJtf2L._AC_UL1500_.jpg"
+        ],
+        "Labels": [
+            "tops",
+            "t-shirts"
+        ]
+    },
+    {
+        "Title": "Zapatos de vestir",
+        "Description": "Zapatos de vestir para hombre, talla 42, en perfecto estado. Usados solo una vez.",
+        "Price": 15,
+        "Rating": 4,
+        "Size": "M",
+        "Seller": "Victoria paganini",
+        "ImagesURLs": [
+            "https://cdn.shopify.com/s/files/1/0234/4461/products/french-bulldog-kids-socks-model_400x.jpg?v=1667325940"
+        ],
+        "Labels": [
+            "shoes"
+        ]
+    },
+    {
+        "Title": "Camisa a rayas",
+        "Description": "Comfortable black T-shirt made from 100% cotton.",
+        "Price": 80000,
+        "Rating": 4,
+        "Size": "M",
+        "Seller": "Jhon ventas",
+        "ImagesURLs": [
+            "https://m.media-amazon.com/images/I/71wF0tJtf2L._AC_UL1500_.jpg"
+        ],
+        "Labels": [
+            "tops",
+            "t-shirts"
+        ]
+    }
+]

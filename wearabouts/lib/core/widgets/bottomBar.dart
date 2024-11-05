@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wearabouts/core/theme/app_pallete.dart';
-import 'package:wearabouts/features/donation/pages/donationPage.dart';
+import 'package:wearabouts/features/donation/view/pages/donationPage.dart';
 import 'package:wearabouts/features/home/view/pages/homePage.dart';
 
 class MyBottombar {

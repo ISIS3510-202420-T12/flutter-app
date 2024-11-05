@@ -3,6 +3,7 @@ import 'package:money_formatter/money_formatter.dart';
 import 'package:provider/provider.dart';
 import 'package:wearabouts/core/repositories/model/clothe.dart';
 import 'package:wearabouts/features/home/view/pages/checkoutPage.dart';
+import 'package:wearabouts/features/home/view/widgets/addToFavoritesButton.dart';
 import 'package:wearabouts/features/home/view/widgets/addToKart.dart';
 import 'package:wearabouts/features/home/view/widgets/buyBotton.dart';
 import 'package:wearabouts/features/home/view/widgets/contextAppBar.dart';
@@ -59,6 +60,7 @@ class _ClotheDetailPageState extends State<ClotheDetailPage> {
                           style: TextStyle(
                               fontSize: 22, fontWeight: FontWeight.w100),
                         ),
+                        AddToFavoritesButton(clothe: item)
                       ],
                     ),
                     Column(
@@ -79,13 +81,12 @@ class _ClotheDetailPageState extends State<ClotheDetailPage> {
                           height: 10,
                         ),
                         AddToKartButton(onTap: () {
-                          Provider.of<MarketPlaceViewModel>(context,
-                                  listen: false)
-                              .addToKart(item);
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            duration: Duration(seconds: 1),
-                            content: Text("Añadido al carrito"),
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: const Duration(seconds: 1),
+                            content: Text(Provider.of<MarketPlaceViewModel>(
+                                    context,
+                                    listen: false)
+                                .addToKart(item)),
                           ));
                         })
                       ],
@@ -123,7 +124,7 @@ class _ClotheDetailPageState extends State<ClotheDetailPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                const VendorProfileCard()
+                VendorProfileCard()
               ],
             ),
           ),

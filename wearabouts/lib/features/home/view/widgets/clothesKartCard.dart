@@ -42,7 +42,12 @@ class _ClothesKartCardState extends State<ClothesKartCard> {
               Text(item.title),
             ],
           ),
-          Text(formatedPrice.output.compactSymbolOnRight)
+          Row(
+            children: [
+              Text(formatedPrice.output.compactSymbolOnRight),
+              const SizedBox(width: 20)
+            ],
+          ),
         ]);
   }
 }
