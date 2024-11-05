@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wearabouts/core/repositories/clothesRepository.dart';
 import 'package:wearabouts/core/repositories/model/clothe.dart';
@@ -138,7 +139,16 @@ class MarketPlaceViewModel with ChangeNotifier {
     }
   }
 
-  void sortItemsByUserLabels(Map<String, int> userLabels) {
+  Future<void> sortItemsByUserLabelsAsync(Map<String, int> userLabels) async {
+    // Run sorting in an isolate
+    items = await compute(_sortItems, [items, userLabels]);
+    notifyListeners();
+  }
+
+// Separate function to perform the sorting logic in an isolate
+  static List<Clothe> _sortItems(List args) {
+    List<Clothe> items = args[0];
+    Map<String, int> userLabels = args[1];
     items.sort((a, b) {
       int priorityA = a.labels
           .where((label) => userLabels.containsKey(label))
@@ -146,10 +156,12 @@ class MarketPlaceViewModel with ChangeNotifier {
       int priorityB = b.labels
           .where((label) => userLabels.containsKey(label))
           .fold(0, (sum, label) => sum + userLabels[label]!);
-
       return priorityB.compareTo(priorityA);
     });
-    print("Items organized by user labels");
+
+  print("Items organized by user labels");
+   return items;
+
   }
 
   void obtainPrice() {

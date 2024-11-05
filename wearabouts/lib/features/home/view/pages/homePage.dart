@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                 // Ordena los items antes de mostrarlos
                 if (userViewModel.user != null) {
                   marketPlaceViewModel
-                      .sortItemsByUserLabels(userViewModel.user!.labels);
+                      .sortItemsByUserLabelsAsync(userViewModel.user!.labels);
                 }
 
                 return Wrap(
