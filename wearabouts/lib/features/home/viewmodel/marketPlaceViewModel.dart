@@ -5,14 +5,14 @@ import 'package:wearabouts/core/repositories/model/clothe.dart';
 import 'package:wearabouts/core/repositories/usersRepository.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:wearabouts/services/localNotifications/notificacionService.dart';
+import 'package:wearabouts/services/networkChecker/networkService.dart';
 import '../../../core/repositories/model/user.dart';
 import '../../auth/viewmodel/userViewModel.dart';
 
 class MarketPlaceViewModel with ChangeNotifier {
   final ClothesRepository _clothesRepository;
   final UsersRepository _usersRepository;
-
-  MarketPlaceViewModel(this._clothesRepository, this._usersRepository);
+  final NetworkService _networkService = NetworkService();
 
   List<Clothe> items = [];
   List<Clothe> kart = [];
@@ -21,10 +21,12 @@ class MarketPlaceViewModel with ChangeNotifier {
 
   List<Clothe> featured = [];
   double totalPrice = 0;
-  double deliveryfee = 3000;
+  double deliveryFee = 3000;
 
-  setItems(List<Clothe> newlist) {
-    items = newlist;
+  MarketPlaceViewModel(this._clothesRepository, this._usersRepository);
+
+  setItems(List<Clothe> newList) {
+    items = newList;
     notifyListeners();
   }
 
@@ -72,9 +74,9 @@ class MarketPlaceViewModel with ChangeNotifier {
     }
   }
 
-  addToKart(Clothe _item_) {
-    if (!kart.contains(_item_)) {
-      kart.add(_item_);
+  addToKart(Clothe item) {
+    if (!kart.contains(item)) {
+      kart.add(item);
       obtainPrice();
       notifyListeners();
       return "Item added to the kart";
@@ -86,6 +88,18 @@ class MarketPlaceViewModel with ChangeNotifier {
   void makePayment(BuildContext context, UserViewModel userViewModel,
       FirebaseAnalytics analytics) async {
     try {
+      bool isConnected = await _networkService.hasInternetConnection();
+      if (!isConnected) {
+        print("No hay conexión a Internet. No se puede realizar el pago.");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content:
+                Text("No internet connection. Please connect and try again."),
+          ),
+        );
+        return;
+      }
+
       Map<String, int> allLabels = {};
 
       for (Clothe clothe in kart) {
@@ -109,7 +123,7 @@ class MarketPlaceViewModel with ChangeNotifier {
 
         userViewModel.setUser(currentUser);
 
-        // Registra el evento de compra con Firebase Analytics
+        // Registrar el evento de compra con Firebase Analytics
         await analytics.logEvent(
           name: "purchase",
           parameters: {
@@ -119,7 +133,7 @@ class MarketPlaceViewModel with ChangeNotifier {
         );
 
         NotificationService.saveNotification(
-            "You have purchased ${items.length} items for $totalPrice \$");
+            "You have purchased ${kart.length} items for $totalPrice \$");
 
         for (var item in kart) {
           for (String label in item.labels) {
@@ -136,15 +150,21 @@ class MarketPlaceViewModel with ChangeNotifier {
           }
         }
 
-        // Limpia el carrito
+        // Limpiar el carrito
         kart = [];
         totalPrice = 0;
         notifyListeners();
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Your order has been processed!"),
+          ),
+        );
       } else {
         print('No user is logged in.');
       }
     } catch (e) {
-      print('Error updating user labels: $e');
+      print('Error processing payment: $e');
     }
   }
 
@@ -167,20 +187,17 @@ class MarketPlaceViewModel with ChangeNotifier {
           .fold(0, (sum, label) => sum + userLabels[label]!);
       return priorityB.compareTo(priorityA);
     });
-    return items;
+
+  print("Items organized by user labels");
+   return items;
+
   }
 
   void obtainPrice() {
-    double totalPrice_ = 0;
-    for (var kartItem in kart) {
-      totalPrice_ += kartItem.price;
-    }
-
-    totalPrice = totalPrice_;
+    totalPrice = kart.fold(0, (sum, item) => sum + item.price);
   }
 
   void updateFeaturedList(Map<String, int> userLabels) {
-    // Encuentra la etiqueta más frecuente
     String? mostFrequentLabel;
     int maxFrequency = 0;
 
@@ -191,18 +208,15 @@ class MarketPlaceViewModel with ChangeNotifier {
       }
     });
 
-    // Verifica que haya una etiqueta válida antes de continuar
     if (mostFrequentLabel != null) {
-      // Filtra los items que contienen la etiqueta más frecuente y no están ya en featured
       featured = items
           .where((item) {
             return item.labels.contains(mostFrequentLabel) &&
                 !featured.contains(item);
           })
           .take(4)
-          .toList(); // Limita a un máximo de 4 elementos
+          .toList();
 
-      // Elimina de items los elementos que están en featured
       items.removeWhere((item) => featured.contains(item));
 
       notifyListeners();
