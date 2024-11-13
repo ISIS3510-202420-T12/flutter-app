@@ -16,6 +16,9 @@ class MarketPlaceViewModel with ChangeNotifier {
 
   List<Clothe> items = [];
   List<Clothe> kart = [];
+  List<Clothe> filteredItems = [];
+  Set<String> selectedCategories = {};
+
   List<Clothe> featured = [];
   double totalPrice = 0;
   double deliveryfee = 3000;
@@ -31,7 +34,31 @@ class MarketPlaceViewModel with ChangeNotifier {
 
   updateItems(List<Clothe> _items) {
     items = _items;
+    updateFilteredItems();
     notifyListeners();
+  }
+
+  void updateFilteredItems() {
+    if (selectedCategories.isEmpty) {
+      filteredItems = List.from(items);
+    } else {
+      filteredItems = items.where((item) {
+        return item.labels.any((label) => selectedCategories
+            .contains(label.toLowerCase())); // Convertir label a minúsculas
+      }).toList();
+    }
+    notifyListeners();
+  }
+
+// Asegurarse de que las categorías seleccionadas estén en minúsculas
+  void toggleCategory(String category) {
+    String lowerCategory = category.toLowerCase();
+    if (selectedCategories.contains(lowerCategory)) {
+      selectedCategories.remove(lowerCategory);
+    } else {
+      selectedCategories.add(lowerCategory);
+    }
+    updateFilteredItems();
   }
 
   Future<void> populate(UserViewModel userViewModel) async {
@@ -101,7 +128,9 @@ class MarketPlaceViewModel with ChangeNotifier {
               parameters: {
                 "label": label,
                 "city": currentUser.city,
-                "value": item.price
+                "user": currentUser.id,
+                "value": item.price,
+                "seller": item.seller.id
               },
             );
           }
