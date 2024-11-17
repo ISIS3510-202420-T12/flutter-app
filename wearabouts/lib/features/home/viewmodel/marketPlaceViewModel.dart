@@ -68,6 +68,7 @@ class MarketPlaceViewModel with ChangeNotifier {
       List<Clothe> fetchedItems = await _clothesRepository.fetchClothes();
       setItems(fetchedItems);
       updateFeaturedList(userViewModel.user?.labels ?? {});
+
       print("Market items loaded");
     } catch (e) {
       print('Error fetching items: $e');
@@ -169,12 +170,10 @@ class MarketPlaceViewModel with ChangeNotifier {
   }
 
   Future<void> sortItemsByUserLabelsAsync(Map<String, int> userLabels) async {
-    // Run sorting in an isolate
     items = await compute(_sortItems, [items, userLabels]);
     notifyListeners();
   }
 
-// Separate function to perform the sorting logic in an isolate
   static List<Clothe> _sortItems(List args) {
     List<Clothe> items = args[0];
     Map<String, int> userLabels = args[1];
@@ -188,9 +187,8 @@ class MarketPlaceViewModel with ChangeNotifier {
       return priorityB.compareTo(priorityA);
     });
 
-  print("Items organized by user labels");
-   return items;
-
+    print("Items organized by user labels");
+    return items;
   }
 
   void obtainPrice() {
