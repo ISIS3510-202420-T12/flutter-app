@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:wearabouts/features/home/viewmodel/marketPlaceViewModel.dart';
 
 class CategoryTab extends StatefulWidget {
   final String name;
@@ -21,6 +22,9 @@ class _CategoryTabState extends State<CategoryTab> {
     setState(() {
       _isPressed = !_isPressed;
     });
+
+    final viewModel = Provider.of<MarketPlaceViewModel>(context, listen: false);
+    viewModel.toggleCategory(widget.name);
 
     Provider.of<FirebaseAnalytics>(context, listen: false).logEvent(
       name: 'select_category_filter',

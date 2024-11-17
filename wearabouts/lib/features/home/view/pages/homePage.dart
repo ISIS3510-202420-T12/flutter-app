@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                 return Wrap(
                   spacing: 10,
                   runSpacing: 10,
-                  children: marketPlaceViewModel.items.map((clothe) {
+                  children: marketPlaceViewModel.filteredItems.map((clothe) {
                     return ClothesCard(item: clothe);
                   }).toList(),
                 );

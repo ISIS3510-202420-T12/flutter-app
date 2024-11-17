@@ -52,11 +52,11 @@ void main() async {
   DonationsRepository donationsRepository = DonationsRepository();
   ActivitiesRepository activitiesRepository = ActivitiesRepository();
 
-  //bool alreadyDonated = prefs.getBool('Donated') ?? false;
-  bool alreadyDonated = true;
+  bool alreadyDonated = prefs.getBool('Donated') ?? false;
+  //bool alreadyDonated = true;
   if (alreadyDonated) {
-    //bool alreadyComeBack = prefs.getBool('DonatedComeback') ?? false;
-    bool alreadyComeBack = false;
+    bool alreadyComeBack = prefs.getBool('DonatedComeback') ?? false;
+    //bool alreadyComeBack = false;
     if (!alreadyComeBack) {
       await analytics.logEvent(
           name: "already_donated_entered",
