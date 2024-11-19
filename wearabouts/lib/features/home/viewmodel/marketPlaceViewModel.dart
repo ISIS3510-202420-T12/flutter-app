@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:wearabouts/core/repositories/clothesRepository.dart';
 import 'package:wearabouts/core/repositories/model/clothe.dart';
@@ -23,6 +26,8 @@ class MarketPlaceViewModel with ChangeNotifier {
   double totalPrice = 0;
   double deliveryFee = 3000;
 
+  NetworkService get networkService => _networkService;
+
   MarketPlaceViewModel(this._clothesRepository, this._usersRepository);
 
   setItems(List<Clothe> newList) {
@@ -45,14 +50,13 @@ class MarketPlaceViewModel with ChangeNotifier {
       filteredItems = List.from(items);
     } else {
       filteredItems = items.where((item) {
-        return item.labels.any((label) => selectedCategories
-            .contains(label.toLowerCase())); // Convertir label a minúsculas
+        return item.labels
+            .any((label) => selectedCategories.contains(label.toLowerCase()));
       }).toList();
     }
     notifyListeners();
   }
 
-// Asegurarse de que las categorías seleccionadas estén en minúsculas
   void toggleCategory(String category) {
     String lowerCategory = category.toLowerCase();
     if (selectedCategories.contains(lowerCategory)) {
@@ -68,7 +72,7 @@ class MarketPlaceViewModel with ChangeNotifier {
       List<Clothe> fetchedItems = await _clothesRepository.fetchClothes();
       setItems(fetchedItems);
       updateFeaturedList(userViewModel.user?.labels ?? {});
-
+      saveToCache();
       print("Market items loaded");
     } catch (e) {
       print('Error fetching items: $e');
@@ -91,7 +95,6 @@ class MarketPlaceViewModel with ChangeNotifier {
     try {
       bool isConnected = await _networkService.hasInternetConnection();
       if (!isConnected) {
-        print("No hay conexión a Internet. No se puede realizar el pago.");
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content:
@@ -124,7 +127,6 @@ class MarketPlaceViewModel with ChangeNotifier {
 
         userViewModel.setUser(currentUser);
 
-        // Registrar el evento de compra con Firebase Analytics
         await analytics.logEvent(
           name: "purchase",
           parameters: {
@@ -136,22 +138,6 @@ class MarketPlaceViewModel with ChangeNotifier {
         NotificationService.saveNotification(
             "You have purchased ${kart.length} items for $totalPrice \$");
 
-        for (var item in kart) {
-          for (String label in item.labels) {
-            await analytics.logEvent(
-              name: "label_purchase",
-              parameters: {
-                "label": label,
-                "city": currentUser.city,
-                "user": currentUser.id,
-                "value": item.price,
-                "seller": item.seller.id
-              },
-            );
-          }
-        }
-
-        // Limpiar el carrito
         kart = [];
         totalPrice = 0;
         notifyListeners();
@@ -221,5 +207,42 @@ class MarketPlaceViewModel with ChangeNotifier {
       print(
           "Featured list updated with items containing label: $mostFrequentLabel");
     }
+  }
+
+  Future<void> saveToCache() async {
+    final prefs = await SharedPreferences.getInstance();
+    final cacheManager = DefaultCacheManager();
+
+    List<String> serializedItems =
+        items.map((item) => jsonEncode(item.toJson())).toList();
+    await prefs.setStringList('cached_items', serializedItems);
+
+    for (Clothe item in items) {
+      for (String url in item.imagesURLs) {
+        await cacheManager.downloadFile(url);
+      }
+    }
+    print("Cache saved successfully.");
+  }
+
+  Future<void> loadFromCache() async {
+    final prefs = await SharedPreferences.getInstance();
+    final cacheManager = DefaultCacheManager();
+
+    List<String>? serializedItems = prefs.getStringList('cached_items');
+    if (serializedItems != null) {
+      items = serializedItems
+          .map((item) => Clothe.fromJson(jsonDecode(item)))
+          .toList();
+    }
+
+    for (Clothe item in items) {
+      for (String url in item.imagesURLs) {
+        await cacheManager.getSingleFile(url).catchError((error) {
+          print("Error loading image from cache: $error");
+        });
+      }
+    }
+    notifyListeners();
   }
 }

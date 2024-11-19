@@ -28,6 +28,7 @@ dependencies:
   build_runner: ^2.3.3
   connectivity_plus: ^4.0.1
   cached_network_image: ^3.2.1
+  dio: ^5.0.0
 
 
 

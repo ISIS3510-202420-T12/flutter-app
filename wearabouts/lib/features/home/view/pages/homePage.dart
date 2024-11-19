@@ -7,6 +7,7 @@ import 'package:wearabouts/features/home/viewmodel/marketPlaceViewModel.dart';
 
 import '../../../../core/theme/app_pallete.dart';
 import '../../../auth/viewmodel/userViewModel.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,17 +17,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isConnected = true;
+
   @override
   void initState() {
     super.initState();
+    checkInternetAndLoadData();
+  }
 
-    // Inicializa el ViewModel y llena la lista de items
+  Future<void> checkInternetAndLoadData() async {
+    final viewModel = Provider.of<MarketPlaceViewModel>(context, listen: false);
+    final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    final networkService = viewModel.networkService;
 
-    Future.microtask(() {
-      final userViewModel = Provider.of<UserViewModel>(context, listen: false);
-      Provider.of<MarketPlaceViewModel>(context, listen: false)
-          .populate(userViewModel);
+    bool connectionStatus = await networkService.hasInternetConnection();
+    setState(() {
+      isConnected = connectionStatus;
     });
+
+    if (viewModel.items.isEmpty) {
+      if (isConnected) {
+        await viewModel.populate(userViewModel);
+      } else {
+        await viewModel.loadFromCache();
+      }
+    }
   }
 
   @override
@@ -83,15 +98,38 @@ class _HomePageState extends State<HomePage> {
                 height: 300,
                 width: 1000,
                 color: Colors.grey,
-                child: Image.network(
-                  "https://www.fashiongonerogue.com/wp-content/uploads/2021/04/Model-Chic-Fashion.jpg",
+                child: CachedNetworkImage(
+                  imageUrl:
+                      "https://www.fashiongonerogue.com/wp-content/uploads/2021/04/Model-Chic-Fashion.jpg",
+                  placeholder: (context, url) =>
+                      const Center(child: CircularProgressIndicator()),
+                  errorWidget: (context, url, error) => const Center(
+                    child: Icon(
+                      Icons.broken_image,
+                      size: 50,
+                      color: Colors.red,
+                    ),
+                  ),
                   fit: BoxFit.fitHeight,
                 ),
               ),
             ),
             Consumer<MarketPlaceViewModel>(
               builder: (context, marketPlaceViewModel, child) {
-                // Ordena los items antes de mostrarlos
+                if (marketPlaceViewModel.items.isEmpty) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: isConnected
+                          ? const CircularProgressIndicator()
+                          : const Text(
+                              "You are offline. Displaying cached data.",
+                              style: TextStyle(fontSize: 16, color: Colors.red),
+                              textAlign: TextAlign.center,
+                            ),
+                    ),
+                  );
+                }
 
                 return Column(
                   children: [
@@ -124,7 +162,6 @@ class _HomePageState extends State<HomePage> {
             const Divider(color: Colors.black),
             Consumer2<MarketPlaceViewModel, UserViewModel>(
               builder: (context, marketPlaceViewModel, userViewModel, child) {
-                // Ordena los items antes de mostrarlos
                 if (userViewModel.user != null) {
                   marketPlaceViewModel
                       .sortItemsByUserLabelsAsync(userViewModel.user!.labels);

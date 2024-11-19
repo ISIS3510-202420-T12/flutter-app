@@ -1,4 +1,3 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:money_formatter/money_formatter.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +5,8 @@ import 'package:wearabouts/features/auth/viewmodel/userViewModel.dart';
 import 'package:wearabouts/features/home/view/widgets/clothesKartCard.dart';
 import 'package:wearabouts/features/home/view/widgets/contextAppBar.dart';
 import 'package:wearabouts/services/networkChecker/networkService.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+
 import '../../../../core/theme/app_pallete.dart';
 import '../../viewmodel/marketPlaceViewModel.dart';
 
@@ -17,11 +18,26 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
-  final NetworkService _networkService = NetworkService();
+  bool isConnected = true;
+
+  @override
+  void initState() {
+    super.initState();
+    checkInternetConnection();
+  }
+
+  Future<void> checkInternetConnection() async {
+    final networkService =
+        Provider.of<MarketPlaceViewModel>(context, listen: false)
+            .networkService;
+    isConnected = await networkService.hasInternetConnection();
+    setState(() {});
+  }
 
   void _handlePayment(MarketPlaceViewModel viewModel) async {
-    bool isConnected = await _networkService.hasInternetConnection();
-    if (!isConnected) {
+    bool currentConnectionStatus =
+        await viewModel.networkService.hasInternetConnection();
+    if (!currentConnectionStatus) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content:
@@ -47,7 +63,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ElevatedButton(
               child: const Text("Proceed"),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
                 if (viewModel.kart.isNotEmpty) {
                   viewModel.makePayment(
                     context,
@@ -85,11 +101,48 @@ class _CheckoutPageState extends State<CheckoutPage> {
               const SizedBox(height: 10),
               Consumer<MarketPlaceViewModel>(
                 builder: (context, viewModel, child) {
+                  if (!isConnected) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.wifi_off,
+                              size: 50,
+                              color: Colors.red,
+                            ),
+                            const SizedBox(height: 10),
+                            const Text(
+                              "You are offline. Please connect to the internet to proceed with payment.",
+                              style: TextStyle(fontSize: 16, color: Colors.red),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 20),
+                            ElevatedButton(
+                              onPressed: checkInternetConnection,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Pallete.color2,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                              ),
+                              child: const Text(
+                                "Retry",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+
                   double subtotal = viewModel.totalPrice;
                   double deliveryFee = viewModel.deliveryFee;
                   double total = subtotal + deliveryFee;
 
-                  // Format values for display
                   MoneyFormatter formattedSubtotal = MoneyFormatter(
                     amount: subtotal,
                     settings: MoneyFormatterSettings(fractionDigits: 0),

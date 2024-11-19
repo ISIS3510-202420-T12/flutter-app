@@ -50,12 +50,15 @@ class _ClothesCardState extends State<ClothesCard> {
                       width: 180,
                       child: CachedNetworkImage(
                         imageUrl: item.imagesURLs[0],
-                        placeholder: (context, url) => Center(
+                        placeholder: (context, url) => const Center(
                           child: CircularProgressIndicator(),
                         ),
-                        errorWidget: (context, url, error) => Image.asset(
-                          'assets/images/placeholder.png',
-                          fit: BoxFit.fitHeight,
+                        errorWidget: (context, url, error) => const Center(
+                          child: Icon(
+                            Icons.broken_image,
+                            size: 50,
+                            color: Colors.red,
+                          ),
                         ),
                         fit: BoxFit.fitHeight,
                       ),
