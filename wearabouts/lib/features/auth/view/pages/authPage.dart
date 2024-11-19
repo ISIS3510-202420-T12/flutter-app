@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:wearabouts/core/Viewframes/HomeFrame.dart';
-import 'registerPage.dart'; // Asegúrate de importar RegisterPage
+import 'registerPage.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
