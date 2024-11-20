@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 import 'package:wearabouts/features/home/view/widgets/categoryTab.dart';
 import 'package:wearabouts/features/home/view/widgets/clothesCard.dart';
@@ -17,12 +18,34 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool isConnected = true;
+  bool isConnected = false;
+  late Connectivity _connectivity;
+  late Stream<ConnectivityResult> _connectivityStream;
 
   @override
   void initState() {
     super.initState();
+    _connectivity = Connectivity();
+    _connectivityStream = _connectivity.onConnectivityChanged;
+    monitorConnection();
     checkInternetAndLoadData();
+  }
+
+  Future<void> monitorConnection() async {
+    _connectivityStream.listen((ConnectivityResult result) async {
+      if (result != ConnectivityResult.none) {
+        if (!isConnected) {
+          setState(() {
+            isConnected = true;
+          });
+          await refreshMarketplace();
+        }
+      } else {
+        setState(() {
+          isConnected = false;
+        });
+      }
+    });
   }
 
   Future<void> checkInternetAndLoadData() async {
@@ -42,6 +65,17 @@ class _HomePageState extends State<HomePage> {
         await viewModel.loadFromCache();
       }
     }
+    viewModel.updateFilteredItems();
+  }
+
+  Future<void> refreshMarketplace() async {
+    final viewModel = Provider.of<MarketPlaceViewModel>(context, listen: false);
+    final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+
+    if (isConnected) {
+      await viewModel.populate(userViewModel);
+    }
+    viewModel.updateFilteredItems();
   }
 
   @override
@@ -116,7 +150,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Consumer<MarketPlaceViewModel>(
               builder: (context, marketPlaceViewModel, child) {
-                if (marketPlaceViewModel.items.isEmpty) {
+                if (marketPlaceViewModel.filteredItems.isEmpty) {
                   return Center(
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
@@ -144,35 +178,12 @@ class _HomePageState extends State<HomePage> {
                     Wrap(
                       spacing: 10,
                       runSpacing: 10,
-                      children: marketPlaceViewModel.featured.map((clothe) {
+                      children:
+                          marketPlaceViewModel.filteredItems.map((clothe) {
                         return ClothesCard(item: clothe);
                       }).toList(),
                     ),
                   ],
-                );
-              },
-            ),
-            const Padding(
-              padding: EdgeInsets.all(12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text("New releases"), Text("See all")],
-              ),
-            ),
-            const Divider(color: Colors.black),
-            Consumer2<MarketPlaceViewModel, UserViewModel>(
-              builder: (context, marketPlaceViewModel, userViewModel, child) {
-                if (userViewModel.user != null) {
-                  marketPlaceViewModel
-                      .sortItemsByUserLabelsAsync(userViewModel.user!.labels);
-                }
-
-                return Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
-                  children: marketPlaceViewModel.filteredItems.map((clothe) {
-                    return ClothesCard(item: clothe);
-                  }).toList(),
                 );
               },
             ),
