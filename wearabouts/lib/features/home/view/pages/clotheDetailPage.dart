@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:money_formatter/money_formatter.dart';
 import 'package:provider/provider.dart';
@@ -39,13 +40,24 @@ class _ClotheDetailPageState extends State<ClotheDetailPage> {
               children: [
                 Center(
                   child: Container(
-                      height: 400,
-                      width: double.infinity,
-                      color: Colors.grey,
-                      child: Image.network(
-                        item.imagesURLs[0],
-                        fit: BoxFit.fitHeight,
-                      )),
+                    height: 400,
+                    width: double.infinity,
+                    color: Colors.grey,
+                    child: CachedNetworkImage(
+                      imageUrl: item.imagesURLs[0],
+                      placeholder: (context, url) => const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      errorWidget: (context, url, error) => const Center(
+                        child: Icon(
+                          Icons.broken_image,
+                          size: 50,
+                          color: Colors.red,
+                        ),
+                      ),
+                      fit: BoxFit.fitHeight,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Row(

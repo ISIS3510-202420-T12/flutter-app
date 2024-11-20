@@ -32,6 +32,7 @@ class MarketPlaceViewModel with ChangeNotifier {
 
   setItems(List<Clothe> newList) {
     items = newList;
+    filteredItems = items;
     notifyListeners();
   }
 
