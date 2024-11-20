@@ -49,17 +49,28 @@ class _ClothesCardState extends State<ClothesCard> {
                       height: 120,
                       width: 180,
                       child: CachedNetworkImage(
-                        imageUrl: item.imagesURLs[0],
+                        imageUrl: (item.imagesURLs.isNotEmpty &&
+                                item.imagesURLs[0].isNotEmpty)
+                            ? item.imagesURLs[0]
+                            : '', // Validación de URLs
                         placeholder: (context, url) => const Center(
                           child: CircularProgressIndicator(),
                         ),
-                        errorWidget: (context, url, error) => const Center(
-                          child: Icon(
-                            Icons.broken_image,
-                            size: 50,
-                            color: Colors.red,
-                          ),
-                        ),
+                        errorWidget: (context, url, error) => url.isEmpty
+                            ? const Center(
+                                child: Text(
+                                  "No image available",
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.grey),
+                                ),
+                              )
+                            : const Center(
+                                child: Icon(
+                                  Icons.broken_image,
+                                  size: 50,
+                                  color: Colors.red,
+                                ),
+                              ),
                         fit: BoxFit.fitHeight,
                       ),
                     ),

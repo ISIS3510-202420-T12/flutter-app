@@ -173,7 +173,6 @@ class MarketPlaceViewModel with ChangeNotifier {
       return priorityB.compareTo(priorityA);
     });
 
-    print("Items organized by user labels");
     return items;
   }
 
