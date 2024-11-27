@@ -32,6 +32,7 @@ class MarketPlaceViewModel with ChangeNotifier {
 
   setItems(List<Clothe> newList) {
     items = newList;
+    filteredItems = items;
     notifyListeners();
   }
 
@@ -173,7 +174,6 @@ class MarketPlaceViewModel with ChangeNotifier {
       return priorityB.compareTo(priorityA);
     });
 
-    print("Items organized by user labels");
     return items;
   }
 
