@@ -106,4 +106,10 @@ class Clothe {
       labels: List<String>.from(json['labels'] ?? []),
     );
   }
+
+  // Método toString para depuración
+  @override
+  String toString() {
+    return 'Clothe(id: $id, title: $title, labels: $labels)';
+  }
 }
