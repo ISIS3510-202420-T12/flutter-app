@@ -150,7 +150,8 @@ class _HomePageState extends State<HomePage> {
             ),
             Consumer<MarketPlaceViewModel>(
               builder: (context, marketPlaceViewModel, child) {
-                if (marketPlaceViewModel.filteredItems.isEmpty) {
+                final items = marketPlaceViewModel.filteredItems;
+                if (items.isEmpty) {
                   return Center(
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
@@ -165,26 +166,30 @@ class _HomePageState extends State<HomePage> {
                   );
                 }
 
-                return Column(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [Text("Featured")],
+                else {
+                  List<Widget> clothesCards = [];
+                  for (var clothe in items) {
+                    clothesCards.add(ClothesCard(item: clothe));
+                  }
+
+                  return Column(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [Text("Featured")],
+                        ),
                       ),
-                    ),
-                    const Divider(color: Colors.black),
-                    Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
-                      children:
-                          marketPlaceViewModel.filteredItems.map((clothe) {
-                        return ClothesCard(item: clothe);
-                      }).toList(),
-                    ),
-                  ],
-                );
+                      const Divider(color: Colors.black),
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: clothesCards,
+                      ),
+                    ],
+                  );
+                } // Else
               },
             ),
           ],

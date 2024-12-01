@@ -65,14 +65,19 @@ class MarketPlaceViewModel with ChangeNotifier {
     } else {
       selectedCategories.add(lowerCategory);
     }
+    notifyListeners();
     updateFilteredItems();
+  }
+
+  bool isCategoryPressed(String categoryName) {
+    String sanitizedCategory = categoryName.toLowerCase();
+    return selectedCategories.contains(sanitizedCategory);
   }
 
   Future<void> populate(UserViewModel userViewModel) async {
     try {
       List<Clothe> fetchedItems = await _clothesRepository.fetchClothes();
       setItems(fetchedItems);
-      updateFeaturedList(userViewModel.user?.labels ?? {});
       saveToCache();
       print("Market items loaded");
     } catch (e) {
