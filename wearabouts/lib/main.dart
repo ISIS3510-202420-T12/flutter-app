@@ -9,6 +9,7 @@ import 'package:wearabouts/core/repositories/campaignsRepository.dart';
 import 'package:wearabouts/core/repositories/clothesRepository.dart';
 import 'package:wearabouts/core/repositories/donationPlacesRepository.dart';
 import 'package:wearabouts/core/repositories/donationsRepository.dart';
+import 'package:wearabouts/core/repositories/salesRepository.dart';
 import 'package:wearabouts/core/repositories/usersRepository.dart';
 import 'package:wearabouts/core/theme/theme.dart';
 import 'package:wearabouts/features/auth/view/pages/firstTimePage.dart';
@@ -51,7 +52,7 @@ void main() async {
       DonationPlacesRepository();
   DonationsRepository donationsRepository = DonationsRepository();
   ActivitiesRepository activitiesRepository = ActivitiesRepository();
-
+  SalesRepository salesRepository = SalesRepository();
   bool alreadyDonated = prefs.getBool('Donated') ?? false;
   //bool alreadyDonated = true;
   if (alreadyDonated) {
@@ -70,7 +71,8 @@ void main() async {
     Provider<FirebaseAnalyticsObserver>.value(value: observer),
     ChangeNotifierProvider(
       create: (context) {
-        UserViewModel userViewModel = UserViewModel(usersRepository);
+        UserViewModel userViewModel =
+            UserViewModel(usersRepository, salesRepository);
         userViewModel.fetchUser('JVILLATET1');
         return userViewModel;
       },

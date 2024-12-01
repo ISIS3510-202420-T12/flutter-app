@@ -2,15 +2,21 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wearabouts/core/repositories/model/clothe.dart';
+import 'package:wearabouts/core/repositories/model/sales.dart';
 import 'package:wearabouts/core/repositories/model/user.dart';
+import 'package:wearabouts/core/repositories/salesRepository.dart';
 import 'package:wearabouts/core/repositories/usersRepository.dart';
 
 class UserViewModel with ChangeNotifier {
   final UsersRepository usersRepository;
+  final SalesRepository salesRepository;
   User? _user;
-  String errorMessage = '';
+  List<Sales> _userSales = [];
 
-  UserViewModel(this.usersRepository);
+  String errorMessage = '';
+  List<Sales> get userSales => _userSales;
+  UserViewModel(this.usersRepository, this.salesRepository);
 
   User? get user => _user;
 
@@ -103,5 +109,21 @@ class UserViewModel with ChangeNotifier {
   void logout() {
     _user = null;
     notifyListeners();
+  }
+
+  Future<void> fetchUserSales() async {
+    if (_user != null) {
+      try {
+        _userSales = await salesRepository.fetchSalesByUser(_user!.id);
+        print("User sales loaded");
+        notifyListeners();
+      } catch (e) {
+        errorMessage = 'Error fetching user sales: $e';
+        notifyListeners();
+      }
+    } else {
+      errorMessage = 'User not found';
+      notifyListeners();
+    }
   }
 }
