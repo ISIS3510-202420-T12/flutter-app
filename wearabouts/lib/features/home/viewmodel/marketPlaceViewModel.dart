@@ -20,6 +20,7 @@ class MarketPlaceViewModel with ChangeNotifier {
   List<Clothe> items = [];
   List<Clothe> kart = [];
   List<Clothe> filteredItems = [];
+  List<Clothe> searchResults = [];
   Set<String> selectedCategories = {};
 
   List<Clothe> featured = [];
@@ -211,6 +212,21 @@ class MarketPlaceViewModel with ChangeNotifier {
       notifyListeners();
       print(
           "Featured list updated with items containing label: $mostFrequentLabel");
+    }
+  }
+
+  void filterItemsBySearchTerm(String searchTerm) {
+    if (searchTerm.isEmpty) {
+      searchResults = List.from(items);
+      notifyListeners(); 
+    } else {
+      searchResults = items.where((item) {
+        return item.title.toLowerCase().contains(searchTerm.toLowerCase()) ||
+              item.description.toLowerCase().contains(searchTerm.toLowerCase()) ||
+              item.labels.any((label) => label.toLowerCase().contains(searchTerm.toLowerCase())); // Filtra por etiquetas
+      }).toList();
+
+      notifyListeners();
     }
   }
 

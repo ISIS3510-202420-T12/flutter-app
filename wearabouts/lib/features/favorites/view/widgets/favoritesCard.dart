@@ -24,7 +24,7 @@ class _FavoritesCardState extends State<FavoritesCard> {
         settings: MoneyFormatterSettings(fractionDigits: 0));
     return Card(
       child: Container(
-        height: 150,
+        height: 140,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Row(
