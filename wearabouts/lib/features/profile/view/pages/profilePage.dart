@@ -28,6 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
       if (isConnected) {
         await userViewModel.fetchUser(userViewModel.user?.id ?? '');
+        await userViewModel.fetchUserSales();
       } else {
         if (userViewModel.user == null) {
           setState(() {
