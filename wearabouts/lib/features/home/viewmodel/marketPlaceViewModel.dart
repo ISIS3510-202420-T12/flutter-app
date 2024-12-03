@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:wearabouts/core/repositories/clothesRepository.dart';
 import 'package:wearabouts/core/repositories/model/clothe.dart';
@@ -16,14 +19,21 @@ class MarketPlaceViewModel with ChangeNotifier {
 
   List<Clothe> items = [];
   List<Clothe> kart = [];
+  List<Clothe> filteredItems = [];
+  List<Clothe> searchResults = [];
+  Set<String> selectedCategories = {};
+
   List<Clothe> featured = [];
   double totalPrice = 0;
   double deliveryFee = 3000;
+
+  NetworkService get networkService => _networkService;
 
   MarketPlaceViewModel(this._clothesRepository, this._usersRepository);
 
   setItems(List<Clothe> newList) {
     items = newList;
+    filteredItems = items;
     notifyListeners();
   }
 
@@ -33,14 +43,43 @@ class MarketPlaceViewModel with ChangeNotifier {
 
   updateItems(List<Clothe> _items) {
     items = _items;
+    updateFilteredItems();
     notifyListeners();
+  }
+
+  void updateFilteredItems() {
+    if (selectedCategories.isEmpty) {
+      filteredItems = List.from(items);
+    } else {
+      filteredItems = items.where((item) {
+        return item.labels
+            .any((label) => selectedCategories.contains(label.toLowerCase()));
+      }).toList();
+    }
+    notifyListeners();
+  }
+
+  void toggleCategory(String category) {
+    String lowerCategory = category.toLowerCase();
+    if (selectedCategories.contains(lowerCategory)) {
+      selectedCategories.remove(lowerCategory);
+    } else {
+      selectedCategories.add(lowerCategory);
+    }
+    notifyListeners();
+    updateFilteredItems();
+  }
+
+  bool isCategoryPressed(String categoryName) {
+    String sanitizedCategory = categoryName.toLowerCase();
+    return selectedCategories.contains(sanitizedCategory);
   }
 
   Future<void> populate(UserViewModel userViewModel) async {
     try {
       List<Clothe> fetchedItems = await _clothesRepository.fetchClothes();
       setItems(fetchedItems);
-      updateFeaturedList(userViewModel.user?.labels ?? {});
+      saveToCache();
       print("Market items loaded");
     } catch (e) {
       print('Error fetching items: $e');
@@ -63,7 +102,6 @@ class MarketPlaceViewModel with ChangeNotifier {
     try {
       bool isConnected = await _networkService.hasInternetConnection();
       if (!isConnected) {
-        print("No hay conexión a Internet. No se puede realizar el pago.");
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content:
@@ -96,7 +134,6 @@ class MarketPlaceViewModel with ChangeNotifier {
 
         userViewModel.setUser(currentUser);
 
-        // Registrar el evento de compra con Firebase Analytics
         await analytics.logEvent(
           name: "purchase",
           parameters: {
@@ -108,20 +145,6 @@ class MarketPlaceViewModel with ChangeNotifier {
         NotificationService.saveNotification(
             "You have purchased ${kart.length} items for $totalPrice \$");
 
-        for (var item in kart) {
-          for (String label in item.labels) {
-            await analytics.logEvent(
-              name: "label_purchase",
-              parameters: {
-                "label": label,
-                "city": currentUser.city,
-                "value": item.price
-              },
-            );
-          }
-        }
-
-        // Limpiar el carrito
         kart = [];
         totalPrice = 0;
         notifyListeners();
@@ -140,12 +163,10 @@ class MarketPlaceViewModel with ChangeNotifier {
   }
 
   Future<void> sortItemsByUserLabelsAsync(Map<String, int> userLabels) async {
-    // Run sorting in an isolate
     items = await compute(_sortItems, [items, userLabels]);
     notifyListeners();
   }
 
-// Separate function to perform the sorting logic in an isolate
   static List<Clothe> _sortItems(List args) {
     List<Clothe> items = args[0];
     Map<String, int> userLabels = args[1];
@@ -159,9 +180,7 @@ class MarketPlaceViewModel with ChangeNotifier {
       return priorityB.compareTo(priorityA);
     });
 
-  print("Items organized by user labels");
-   return items;
-
+    return items;
   }
 
   void obtainPrice() {
@@ -194,5 +213,57 @@ class MarketPlaceViewModel with ChangeNotifier {
       print(
           "Featured list updated with items containing label: $mostFrequentLabel");
     }
+  }
+
+  void filterItemsBySearchTerm(String searchTerm) {
+    if (searchTerm.isEmpty) {
+      searchResults = List.from(items);
+      notifyListeners(); 
+    } else {
+      searchResults = items.where((item) {
+        return item.title.toLowerCase().contains(searchTerm.toLowerCase()) ||
+              item.description.toLowerCase().contains(searchTerm.toLowerCase()) ||
+              item.labels.any((label) => label.toLowerCase().contains(searchTerm.toLowerCase())); // Filtra por etiquetas
+      }).toList();
+
+      notifyListeners();
+    }
+  }
+
+  Future<void> saveToCache() async {
+    final prefs = await SharedPreferences.getInstance();
+    final cacheManager = DefaultCacheManager();
+
+    List<String> serializedItems =
+        items.map((item) => jsonEncode(item.toJson())).toList();
+    await prefs.setStringList('cached_items', serializedItems);
+
+    for (Clothe item in items) {
+      for (String url in item.imagesURLs) {
+        await cacheManager.downloadFile(url);
+      }
+    }
+    print("Cache saved successfully.");
+  }
+
+  Future<void> loadFromCache() async {
+    final prefs = await SharedPreferences.getInstance();
+    final cacheManager = DefaultCacheManager();
+
+    List<String>? serializedItems = prefs.getStringList('cached_items');
+    if (serializedItems != null) {
+      items = serializedItems
+          .map((item) => Clothe.fromJson(jsonDecode(item)))
+          .toList();
+    }
+
+    for (Clothe item in items) {
+      for (String url in item.imagesURLs) {
+        await cacheManager.getSingleFile(url).catchError((error) {
+          print("Error loading image from cache: $error");
+        });
+      }
+    }
+    notifyListeners();
   }
 }

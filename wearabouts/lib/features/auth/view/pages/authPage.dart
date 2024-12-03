@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:wearabouts/core/Viewframes/HomeFrame.dart';
-import 'registerPage.dart'; // Asegúrate de importar RegisterPage
+import 'registerPage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -16,15 +17,30 @@ class _AuthPageState extends State<AuthPage> {
   final LocalAuthentication auth = LocalAuthentication();
   String errorMessage = '';
 
-  void _authenticateUser() {
-    final email = emailController.text;
-    final password = passwordController.text;
+  void _authenticateUser() async {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
 
-    if (email == 'j.villatet@uniandes.edu.co') {
-      if (password == 'julian') {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .where('Email', isEqualTo: email)
+          .get();
+
+      if (querySnapshot.docs.isEmpty) {
+        setState(() {
+          errorMessage = 'User not found';
+        });
+        return;
+      }
+
+      final userDoc = querySnapshot.docs.first;
+      final userData = userDoc.data();
+      if (userData['Password'] == password) {
         setState(() {
           errorMessage = '';
         });
+
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const HomeFrame()),
@@ -34,9 +50,9 @@ class _AuthPageState extends State<AuthPage> {
           errorMessage = 'Wrong password';
         });
       }
-    } else {
+    } catch (e) {
       setState(() {
-        errorMessage = 'User not found';
+        errorMessage = 'Error: ${e.toString()}';
       });
     }
   }

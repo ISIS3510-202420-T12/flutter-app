@@ -141,3 +141,8 @@ wearabouts/windows/flutter/generated_plugins.cmake
 /wearabouts/windows
 /wearabouts/macos
 /wearabouts/macos
+wearabouts/macos/Flutter/GeneratedPluginRegistrant.swift
+wearabouts/macos/Flutter/GeneratedPluginRegistrant.swift
+wearabouts/windows/flutter/generated_plugin_registrant.cc
+wearabouts/windows/flutter/generated_plugins.cmake
+wearabouts/pubspec.lock

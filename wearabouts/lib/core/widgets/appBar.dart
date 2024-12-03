@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wearabouts/features/home/view/pages/checkoutPage.dart';
+import 'package:wearabouts/features/home/view/pages/marketplaceSearchPage.dart';
 import 'package:wearabouts/features/notifications/view/pages/notificationsPage.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -27,7 +28,14 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               );
             },
             icon: const FaIcon(FontAwesomeIcons.shoppingBag)),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.search))
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MarketplaceSearchPage()),
+            );
+          }, 
+          icon: const Icon(Icons.search))
       ],
       leadingWidth: 120,
       leading: Row(

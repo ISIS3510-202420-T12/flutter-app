@@ -34,7 +34,17 @@ class _FavoritesCardState extends State<FavoritesCard> {
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox.square(
                   dimension: 80,
-                  child: Image.network(item.imagesURLs[0]),
+                  child: Image.network(
+                    item.imagesURLs[0],
+                    errorBuilder: (BuildContext context, Object error,
+                        StackTrace? stackTrace) {
+                      return Icon(
+                        Icons.broken_image,
+                        color: Colors.grey,
+                        size: 80,
+                      ); // Reemplazar con un ícono o widget personalizado
+                    },
+                  ),
                 ),
               ),
               Container(

@@ -7,9 +7,7 @@ import 'package:wearabouts/features/donation/view/pages/donationPage.dart';
 import 'package:wearabouts/features/favorites/view/pages/favoritesPage.dart';
 import 'package:wearabouts/features/profile/view/pages/profilePage.dart';
 import 'package:wearabouts/features/sell/view/pages/sellPage.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:wearabouts/services/networkChecker/networkService.dart';
-
+import 'package:wearabouts/features/home/viewmodel/marketPlaceViewModel.dart';
 import '../../features/home/view/pages/homePage.dart';
 
 class HomeFrame extends StatefulWidget {
@@ -25,7 +23,7 @@ class _HomeFrameState extends State<HomeFrame> {
     const SellPage(),
     const DonationPage(),
     const FavoritesPage(),
-    const ProfilePage()
+    const ProfilePage(),
   ];
   int mycurrentIndex = 0;
   bool isConnected = true;
@@ -38,18 +36,18 @@ class _HomeFrameState extends State<HomeFrame> {
   }
 
   Future<void> checkInternetConnection() async {
-    final networkService = NetworkService();
+    final networkService =
+        Provider.of<MarketPlaceViewModel>(context, listen: false)
+            .networkService;
     bool connectionStatus = await networkService.hasInternetConnection();
     setState(() {
       isConnected = connectionStatus;
     });
-  }
 
-  Future<void> _logScreenView(String screenName) async {
-    await Provider.of<FirebaseAnalytics>(context, listen: false).logEvent(
-      name: 'screen_view',
-      parameters: {'screen_name': screenName},
-    );
+    if (!isConnected) {
+      await Provider.of<MarketPlaceViewModel>(context, listen: false)
+          .loadFromCache();
+    }
   }
 
   void _onTabTapped(int index) {
@@ -59,7 +57,6 @@ class _HomeFrameState extends State<HomeFrame> {
         checkInternetConnection();
       }
     });
-    _logScreenView(screenNames[index]);
   }
 
   @override
@@ -130,48 +127,57 @@ class _HomeFrameState extends State<HomeFrame> {
                     icon: FaIcon(FontAwesomeIcons.solidHeart),
                     label: "favorites"),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.circle), label: "profile")
+                    icon: Icon(Icons.circle), label: "profile"),
               ],
             ),
           ),
         ),
       ),
-      body: mycurrentIndex == 0 && !isConnected
-          ? Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.wifi_off,
-                      size: 50,
-                      color: Colors.red,
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      "No internet connection. Please connect to the internet to access this section.",
-                      style: TextStyle(fontSize: 16, color: Colors.red),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: checkInternetConnection,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Pallete.color2,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
+      body: Consumer<MarketPlaceViewModel>(
+        builder: (context, viewModel, child) {
+          if (mycurrentIndex == 0) {
+            if (viewModel.items.isEmpty && !isConnected) {
+              // Mostrar mensaje si no hay conexión y no hay datos cacheados
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.wifi_off,
+                        size: 50,
+                        color: Colors.red,
                       ),
-                      child: const Text(
-                        "Retry",
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      const SizedBox(height: 10),
+                      const Text(
+                        "No internet connection. Please connect to the internet to access this section.",
+                        style: TextStyle(fontSize: 16, color: Colors.red),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: checkInternetConnection,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Pallete.color2,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                        ),
+                        child: const Text(
+                          "Retry",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          : pages[mycurrentIndex],
+              );
+            }
+            return pages[mycurrentIndex];
+          }
+          return pages[mycurrentIndex];
+        },
+      ),
     );
   }
 }

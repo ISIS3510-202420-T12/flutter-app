@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:wearabouts/features/home/viewmodel/marketPlaceViewModel.dart';
 
 class CategoryTab extends StatefulWidget {
   final String name;
@@ -15,23 +16,22 @@ class CategoryTab extends StatefulWidget {
 }
 
 class _CategoryTabState extends State<CategoryTab> {
-  bool _isPressed = false;
-
-  void _togglePressed() {
-    setState(() {
-      _isPressed = !_isPressed;
-    });
-
-    Provider.of<FirebaseAnalytics>(context, listen: false).logEvent(
-      name: 'select_category_filter',
-      parameters: {
-        'category_name': widget.name,
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<MarketPlaceViewModel>(context);
+    bool _isPressed = viewModel.isCategoryPressed(widget.name);
+
+    void _togglePressed() {
+      viewModel.toggleCategory(widget.name);
+      Provider.of<FirebaseAnalytics>(context, listen: false).logEvent(
+        name: 'select_category_filter',
+        parameters: {
+          'category_name': widget.name,
+        },
+      );
+    }
+
     return GestureDetector(
       onTap: _togglePressed,
       child: Card(
